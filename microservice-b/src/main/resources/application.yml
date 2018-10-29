@@ -1,0 +1,34 @@
+server:
+  port: 9001
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+#    org.springframework.boot.autoconfigure: DEBUG
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8090/uaa/token_keys
+      client:
+        registration:
+          client-c:
+            provider: uaa
+            client-id: client-c
+            client-secret: secret
+            authorization-grant-type: client_credentials
+            scope: authority-c
+        provider:
+          uaa:
+            token-uri: http://localhost:8090/uaa/oauth/token
+
+oauth2:
+  resource:
+    services:
+      service-c:
+        uri: http://localhost:9002/service-c

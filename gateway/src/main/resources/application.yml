@@ -1,0 +1,63 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+#    org.springframework.boot.autoconfigure: DEBUG
+
+spring:
+  thymeleaf:
+    cache: false
+  jackson:
+    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
+  security:
+    oauth2:
+      client:
+        registration:
+          login-client:
+            provider: uaa
+            client-id: login-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid,profile,email
+          client-a:
+            provider: uaa
+            client-id: client-a
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri-template: "{baseUrl}/oauth2-flows/flow-a"
+            scope: authority-a
+          client-ab:
+            provider: uaa
+            client-id: client-ab
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri-template: "{baseUrl}/oauth2-flows/flow-ab"
+            scope: authority-a,authority-b
+          client-abc:
+            provider: uaa
+            client-id: client-abc
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri-template: "{baseUrl}/oauth2-flows/flow-abc"
+            scope: authority-a,authority-b,authority-c
+        provider:
+          uaa:
+            authorization-uri: http://localhost:8090/uaa/oauth/authorize
+            token-uri: http://localhost:8090/uaa/oauth/token
+            user-info-uri: http://localhost:8090/uaa/userinfo
+            user-name-attribute: sub
+            jwk-set-uri: http://localhost:8090/uaa/token_keys
+
+oauth2:
+  resource:
+    services:
+      service-a:
+        uri: http://localhost:9000/service-a
+      service-b:
+        uri: http://localhost:9001/service-b

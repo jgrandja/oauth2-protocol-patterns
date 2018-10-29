@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>OAuth 2.0 Flows</title>
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" th:href="@{/assets/img/favicon.ico}"/>
+        <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css" th:href="@{/webjars/bootstrap/css/bootstrap.css}" />
+    </head>
+    <body>
+        <div th:replace="templates::header"></div>
+        <div class="container">
+            <h1>Error</h1>
+            <h4 th:text="${errorMessage}"></h4>
+        </div>
+        <br />
+        <div th:replace="templates::footer"></div>
+        <script src="/webjars/jquery/jquery.min.js" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script src="/webjars/bootstrap/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    </body>
+</html>

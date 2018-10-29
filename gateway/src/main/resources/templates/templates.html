@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>OAuth 2.0 Flows</title>
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" th:href="@{/assets/img/favicon.ico}"/>
+        <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css" th:href="@{/webjars/bootstrap/css/bootstrap.css}" />
+    </head>
+    <body>
+        <div th:fragment="header">
+            <nav class="navbar navbar-default">
+                <div class="container">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="/"><img src="/assets/img/logo.png" th:src="@{/assets/img/logo.png}" /></a>
+                        </div>
+                        <div class="navbar-collapse collapse" id="navbar">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="dropdown">
+                                    <a id="user-menu" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="${currentUser.firstName} + ' ' + ${currentUser.lastName}">User</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a id="sign-out" href="javascript:document.logoutForm.submit()">Sign Out</a></li>
+                                    </ul>
+                                    <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                                        <input hidden type="submit" value="Sign Out"/>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div><!--/.nav-collapse -->
+                    </div><!--/.container-fluid -->
+                </div>
+            </nav>
+        </div>
+        <!-- Flow A Sequence -->
+        <table th:fragment="flowASequence" class="table table-condensed">
+            <thead>
+            <tr class="row">
+                <td class="col-md-12">
+                    <h4>Flow Sequence</h4>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="row">
+                <td class="col-md-12">
+                    <ol>
+                        <li><b>Gateway</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
+                        <li><b>Gateway</b> calls <b>Service-A</b></li>
+                    </ol>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!-- Flow AB Sequence -->
+        <table th:fragment="flowABSequence" class="table table-condensed">
+            <thead>
+            <tr class="row">
+                <td class="col-md-12">
+                    <h4>Flow Sequence</h4>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="row">
+                <td class="col-md-12">
+                    <ol>
+                        <li><b>Gateway</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
+                        <li><b>Gateway</b> calls <b>Service-A</b></li>
+                        <li><b>Gateway</b> calls <b>Service-B</b></li>
+                    </ol>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!-- Flow ABC Sequence (Token Relay) -->
+        <table th:fragment="flowABCSequenceTokenRelay" class="table table-condensed">
+            <thead>
+            <tr class="row">
+                <td class="col-md-12">
+                    <h4>Flow Sequence</h4>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="row">
+                <td class="col-md-12">
+                    <ol>
+                        <li><b>Gateway</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
+                        <li><b>Gateway</b> calls <b>Service-A</b></li>
+                        <li><b>Gateway</b> calls <b>Service-B</b></li>
+                        <li><b>Service-B</b> calls <b>Service-C</b> using <em>Token Relay</em></li>
+                    </ol>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!-- Flow ABC Sequence (Token Exchange) -->
+        <table th:fragment="flowABCSequenceTokenExchange" class="table table-condensed">
+            <thead>
+            <tr class="row">
+                <td class="col-md-12">
+                    <h4>Flow Sequence</h4>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="row">
+                <td class="col-md-12">
+                    <ol>
+                        <li><b>Gateway</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
+                        <li><b>Gateway</b> calls <b>Service-A</b></li>
+                        <li><b>Gateway</b> calls <b>Service-B</b></li>
+                        <li><b>Service-B</b> obtains <i>access token</i> using <span style="font-family:monospace">urn:ietf:params:oauth:grant-type:token-exchange</span> grant</li>
+                        <li><b>Service-B</b> calls <b>Service-C</b></li>
+                    </ol>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!-- Flow ABC Sequence (Client Credentials) -->
+        <table th:fragment="flowABCSequenceClientCredentials" class="table table-condensed">
+            <thead>
+            <tr class="row">
+                <td class="col-md-12">
+                    <h4>Flow Sequence</h4>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="row">
+                <td class="col-md-12">
+                    <ol>
+                        <li><b>Gateway</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
+                        <li><b>Gateway</b> calls <b>Service-A</b></li>
+                        <li><b>Gateway</b> calls <b>Service-B</b></li>
+                        <li><b>Service-B</b> obtains <i>access token</i> using <span style="font-family:monospace">client_credentials</span> grant</li>
+                        <li><b>Service-B</b> calls <b>Service-C</b></li>
+                    </ol>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table th:fragment="serviceCall (serviceCaller, serviceCallee)" class="table table-striped">
+            <thead>
+            <tr class="row">
+                <td class="col-md-12" colspan="2">
+                    <h4>
+                        <span th:if="${serviceCaller}">
+                            <span th:text="${#strings.toUpperCase(serviceCaller.serviceName)}"></span>
+                            <small th:text="${serviceCaller.serviceUri}"></small>
+                            <span> &rarr; </span>
+                        </span>
+                        <span th:text="${#strings.toUpperCase(serviceCallee.serviceName)}"></span>
+                        <small th:text="${serviceCallee.serviceUri}"></small>
+                    </h4>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="row">
+                <td class="col-md-4">jti:</td>
+                <td class="col-md-8" th:text="${serviceCallee.jti}">jti</td>
+            </tr>
+            <tr class="row">
+                <td class="col-md-4">authorities:</td>
+                <td class="col-md-8" th:text="${#strings.listJoin(serviceCallee.authorities,', ')}">authorities</td>
+            </tr>
+            <tr class="row">
+                <td class="col-md-4">sub:</td>
+                <td class="col-md-8" th:text="${serviceCallee.sub}">sub</td>
+            </tr>
+            <tr class="row">
+                <td class="col-md-4">aud:</td>
+                <td class="col-md-8" th:text="${#strings.listJoin(serviceCallee.aud,', ')}">aud</td>
+            </tr>
+            <span th:if="${serviceCallee.additionalInfo}">
+                <tr class="row" th:each="info : ${serviceCallee.additionalInfo}">
+                    <td class="col-md-4" th:text="${info.key}">key</td>
+                    <td class="col-md-8" th:text="${info.value}">value</td>
+                </tr>
+            </span>
+            <tr class="row" th:if="${serviceCallee.serviceCalls}">
+                <span th:each="nextServiceCallee : ${serviceCallee.serviceCalls}">
+                    <div th:replace="::serviceCall (serviceCaller=${serviceCallee},serviceCallee=${nextServiceCallee})"></div>
+                </span>
+            </tr>
+            </tbody>
+        </table>
+        <div th:fragment="footer">
+            <footer>
+                <div class="container hidden-print">
+                    <div class="text-center">
+                        <p class="muted credit">Visit the <a href="https://spring.io/projects/spring-security" target="_blank">Spring Security</a> site for more <a href="https://github.com/spring-projects/spring-security/tree/master/samples/boot" target="_blank">samples</a>.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </body>
+</html>

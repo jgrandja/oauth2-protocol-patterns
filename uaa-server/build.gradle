@@ -1,0 +1,63 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-cargo-plugin:2.3'
+    }
+}
+
+apply plugin: 'com.bmuschko.cargo'
+
+repositories {
+    mavenCentral()
+}
+
+
+if (System.getenv("TOMCAT_HOME") == null) {
+  ext['tomcatHomeDir'] = '/Users/jgrandja/DevTools/apache-tomcat-8.0.33'
+} else {
+  ext['tomcatHomeDir'] = System.getenv("TOMCAT_HOME");
+}
+
+ext {
+    uaaVersion = '4.20.0'
+}
+
+configurations {
+    uaa
+}
+
+dependencies {
+    uaa("org.cloudfoundry.identity:cloudfoundry-identity-uaa:${uaaVersion}@war") {
+        artifact {
+            name = "cloudfoundry-identity-uaa"
+            extension = 'war'
+            type = 'war'
+        }
+    }
+}
+
+task downloadUAA(type: Copy) {
+    from configurations.uaa
+    into "$projectDir"
+}
+
+cargo {
+    containerId = 'tomcat8x'
+    port = 8090
+
+    deployable {
+        file = file("cloudfoundry-identity-uaa-${uaaVersion}.war")
+        context = 'uaa'
+    }
+
+    local {
+        homeDir = file("$tomcatHomeDir")
+        outputFile = file('uaa-server.log')
+
+        systemProperties {
+            property "UAA_CONFIG_PATH", "$projectDir"
+        }
+    }
+}

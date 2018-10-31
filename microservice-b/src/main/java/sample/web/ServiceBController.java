@@ -15,6 +15,7 @@
  */
 package sample.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -40,8 +41,12 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
 @RequestMapping("/service-b")
 public class ServiceBController {
 	private static final String SERVICE_B = "service-b";
+	private static final String CLIENT_ABC = "client-abc";
 	private final WebClient webClient;
 	private final ServicesConfig servicesConfig;
+
+	@Autowired
+	private JwtBearerTokenExchanger tokenExchanger;
 
 	public ServiceBController(WebClient webClient, ServicesConfig servicesConfig) {
 		this.webClient = webClient;
@@ -59,7 +64,7 @@ public class ServiceBController {
 	public ServiceCall serviceB_TokenRelay(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication,
 											HttpServletRequest request) {
 
-		ServiceCall serviceCCall = callServiceC_TokenRelay(jwtAuthentication.getToken());
+		ServiceCall serviceCCall = callServiceC(jwtAuthentication.getToken());
 		return fromServiceB(jwtAuthentication, request, serviceCCall);
 	}
 
@@ -67,7 +72,8 @@ public class ServiceBController {
 	public ServiceCall serviceB_TokenExchange(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication,
 												HttpServletRequest request) {
 
-		ServiceCall serviceCCall = callServiceC_TokenExchange(jwtAuthentication.getToken());
+		Jwt exchangedJwt = this.tokenExchanger.exchange(jwtAuthentication.getToken(), CLIENT_ABC);
+		ServiceCall serviceCCall = callServiceC(exchangedJwt);
 		return fromServiceB(jwtAuthentication, request, serviceCCall);
 	}
 
@@ -76,11 +82,11 @@ public class ServiceBController {
 													@RegisteredOAuth2AuthorizedClient("client-c") OAuth2AuthorizedClient clientC,
 											  		HttpServletRequest request) {
 
-		ServiceCall serviceCCall = callServiceC_ClientCredentials(clientC);
+		ServiceCall serviceCCall = callServiceC(clientC);
 		return fromServiceB(jwtAuthentication, request, serviceCCall);
 	}
 
-	private ServiceCall callServiceC_TokenRelay(Jwt jwt) {
+	private ServiceCall callServiceC(Jwt jwt) {
 		ServicesConfig.ServiceConfig serviceConfig = this.servicesConfig.getConfig(ServicesConfig.SERVICE_C);
 		return this.webClient
 				.get()
@@ -91,12 +97,7 @@ public class ServiceBController {
 				.block();
 	}
 
-	private ServiceCall callServiceC_TokenExchange(Jwt jwt) {
-		// TODO Implement Token Exchange - for now defaulting to Token Relay
-		return callServiceC_TokenRelay(jwt);
-	}
-
-	private ServiceCall callServiceC_ClientCredentials(OAuth2AuthorizedClient authorizedClient) {
+	private ServiceCall callServiceC(OAuth2AuthorizedClient authorizedClient) {
 		ServicesConfig.ServiceConfig serviceConfig = this.servicesConfig.getConfig(ServicesConfig.SERVICE_C);
 		return this.webClient
 				.get()

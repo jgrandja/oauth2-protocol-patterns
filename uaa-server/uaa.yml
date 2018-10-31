@@ -42,7 +42,7 @@ oauth:
     client-abc:
       name: Client ABC
       secret: secret
-      authorized-grant-types: authorization_code
+      authorized-grant-types: authorization_code,urn:ietf:params:oauth:grant-type:jwt-bearer
       scope: authority-a,authority-b,authority-c
       authorities: uaa.resource
       redirect-uri: http://localhost:8080/oauth2-flows/flow-abc

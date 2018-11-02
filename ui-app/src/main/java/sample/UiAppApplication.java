@@ -22,9 +22,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Joe Grandja
  */
 @SpringBootApplication
-public class GatewayApplication {
+public class UiAppApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GatewayApplication.class, args);
+		SpringApplication.run(UiAppApplication.class, args);
 	}
 }

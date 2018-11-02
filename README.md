@@ -9,7 +9,7 @@
 
 - Build the sample -> `./gradlew clean build`
 - Run UAA Server -> `./gradlew -b uaa-server/build.gradle cargoRunLocal`
-- Run Gateway -> `./gradlew -b gateway/build.gradle bootRun`
+- Run UI App -> `./gradlew -b ui-app/build.gradle bootRun`
 - Run Microservice A -> `./gradlew -b microservice-a/build.gradle bootRun`
 - Run Microservice B -> `./gradlew -b microservice-b/build.gradle bootRun`
 - Run Microservice C -> `./gradlew -b microservice-c/build.gradle bootRun`

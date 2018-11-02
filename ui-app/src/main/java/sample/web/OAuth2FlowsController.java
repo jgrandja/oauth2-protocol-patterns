@@ -62,7 +62,7 @@ public class OAuth2FlowsController {
 
 		ServiceCall serviceACall = callService(ServicesConfig.SERVICE_A, clientA);
 
-		model.put("flowACall", fromGatewayService(oauth2Authentication, request, serviceACall));
+		model.put("flowACall", fromUiApp(oauth2Authentication, request, serviceACall));
 
 		return "index";
 	}
@@ -76,7 +76,7 @@ public class OAuth2FlowsController {
 		ServiceCall serviceACall = callService(ServicesConfig.SERVICE_A, clientAB);
 		ServiceCall serviceBCall = callService(ServicesConfig.SERVICE_B, clientAB);
 
-		model.put("flowABCall", fromGatewayService(oauth2Authentication, request, serviceACall, serviceBCall));
+		model.put("flowABCall", fromUiApp(oauth2Authentication, request, serviceACall, serviceBCall));
 
 		return "index";
 	}
@@ -98,7 +98,7 @@ public class OAuth2FlowsController {
 		}
 		ServiceCall serviceBCall = callService(ServicesConfig.SERVICE_B, clientABC, params);
 
-		model.put(modelAttr, fromGatewayService(oauth2Authentication, request, serviceACall, serviceBCall));
+		model.put(modelAttr, fromUiApp(oauth2Authentication, request, serviceACall, serviceBCall));
 
 		return "index";
 	}
@@ -124,14 +124,14 @@ public class OAuth2FlowsController {
 				.block();
 	}
 
-	private ServiceCall fromGatewayService(OAuth2AuthenticationToken oauth2Authentication,
-										   HttpServletRequest request,
-										   ServiceCall... serviceCalls) {
+	private ServiceCall fromUiApp(OAuth2AuthenticationToken oauth2Authentication,
+								  HttpServletRequest request,
+								  ServiceCall... serviceCalls) {
 
 		OidcUser oidcUser = (OidcUser) oauth2Authentication.getPrincipal();
 
 		ServiceCall serviceCall = new ServiceCall();
-		serviceCall.setServiceName(ServicesConfig.SERVICE_GATEWAY);
+		serviceCall.setServiceName(ServicesConfig.UI_APP);
 		serviceCall.setServiceUri(request.getRequestURL().toString());
 		serviceCall.setJti("(opaque to client)");
 		serviceCall.setSub(oidcUser.getSubject());

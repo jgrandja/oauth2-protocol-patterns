@@ -24,7 +24,7 @@ import java.util.Map;
  */
 @ConfigurationProperties("oauth2.resource")
 public class ServicesConfig {
-	public static final String SERVICE_GATEWAY = "gateway";
+	public static final String UI_APP = "ui-app";
 	public static final String SERVICE_A = "service-a";
 	public static final String SERVICE_B = "service-b";
 	private Map<String, ServiceConfig> services;

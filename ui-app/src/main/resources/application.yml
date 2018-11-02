@@ -30,21 +30,21 @@ spring:
             client-id: client-a
             client-secret: secret
             authorization-grant-type: authorization_code
-            redirect-uri-template: "{baseUrl}/oauth2-flows/flow-a"
+            redirect-uri-template: "{baseUrl}/flow-a"
             scope: authority-a
           client-ab:
             provider: uaa
             client-id: client-ab
             client-secret: secret
             authorization-grant-type: authorization_code
-            redirect-uri-template: "{baseUrl}/oauth2-flows/flow-ab"
+            redirect-uri-template: "{baseUrl}/flow-ab"
             scope: authority-a,authority-b
           client-abc:
             provider: uaa
             client-id: client-abc
             client-secret: secret
             authorization-grant-type: authorization_code
-            redirect-uri-template: "{baseUrl}/oauth2-flows/flow-abc"
+            redirect-uri-template: "{baseUrl}/flow-abc"
             scope: authority-a,authority-b,authority-c
         provider:
           uaa:

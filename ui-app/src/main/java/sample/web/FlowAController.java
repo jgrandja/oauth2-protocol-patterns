@@ -15,31 +15,40 @@
  */
 package sample.web;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import sample.config.ServicesConfig;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author Joe Grandja
  */
-@RestController
-@RequestMapping("/service-b")
-public class ServiceBController extends AbstractFlowController {
+@Controller
+@RequestMapping("/flow-a")
+public class FlowAController extends AbstractFlowController {
 
-	public ServiceBController(WebClient webClient, ServicesConfig servicesConfig) {
+	public FlowAController(WebClient webClient, ServicesConfig servicesConfig) {
 		super(webClient, servicesConfig);
 	}
 
 	@GetMapping
-	public ServiceCallResponse serviceB(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication,
-										HttpServletRequest request) {
+	public String flowA(@RegisteredOAuth2AuthorizedClient("client-a") OAuth2AuthorizedClient clientA,
+						OAuth2AuthenticationToken oauth2Authentication,
+						HttpServletRequest request,
+						Map<String, Object> model) {
 
-		return fromServiceB(jwtAuthentication, request);
+		ServiceCallResponse serviceACallResponse = callService(ServicesConfig.SERVICE_A, clientA);
+
+		model.put("flowACall", fromUiApp(oauth2Authentication, request, serviceACallResponse));
+		model.put("flowActive", true);
+
+		return "index";
 	}
 }

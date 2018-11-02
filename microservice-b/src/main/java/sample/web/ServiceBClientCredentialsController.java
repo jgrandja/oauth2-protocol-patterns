@@ -16,6 +16,8 @@
 package sample.web;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,17 +31,19 @@ import javax.servlet.http.HttpServletRequest;
  * @author Joe Grandja
  */
 @RestController
-@RequestMapping("/service-b")
-public class ServiceBController extends AbstractFlowController {
+@RequestMapping(path = "/service-b", params = {"flowType=client_credentials"})
+public class ServiceBClientCredentialsController extends AbstractFlowController {
 
-	public ServiceBController(WebClient webClient, ServicesConfig servicesConfig) {
+	public ServiceBClientCredentialsController(WebClient webClient, ServicesConfig servicesConfig) {
 		super(webClient, servicesConfig);
 	}
 
 	@GetMapping
-	public ServiceCallResponse serviceB(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication,
-										HttpServletRequest request) {
+	public ServiceCallResponse serviceB_ClientCredentials(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication,
+															@RegisteredOAuth2AuthorizedClient("client-c") OAuth2AuthorizedClient clientC,
+															HttpServletRequest request) {
 
-		return fromServiceB(jwtAuthentication, request);
+		ServiceCallResponse serviceCCallResponse = callServiceC(clientC);
+		return fromServiceB(jwtAuthentication, request, serviceCCallResponse);
 	}
 }

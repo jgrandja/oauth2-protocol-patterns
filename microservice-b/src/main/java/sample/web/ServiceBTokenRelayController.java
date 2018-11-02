@@ -29,17 +29,18 @@ import javax.servlet.http.HttpServletRequest;
  * @author Joe Grandja
  */
 @RestController
-@RequestMapping("/service-b")
-public class ServiceBController extends AbstractFlowController {
+@RequestMapping(path = "/service-b", params = {"flowType=token_relay"})
+public class ServiceBTokenRelayController extends AbstractFlowController {
 
-	public ServiceBController(WebClient webClient, ServicesConfig servicesConfig) {
+	public ServiceBTokenRelayController(WebClient webClient, ServicesConfig servicesConfig) {
 		super(webClient, servicesConfig);
 	}
 
 	@GetMapping
-	public ServiceCallResponse serviceB(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication,
-										HttpServletRequest request) {
+	public ServiceCallResponse serviceB_TokenRelay(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication,
+													HttpServletRequest request) {
 
-		return fromServiceB(jwtAuthentication, request);
+		ServiceCallResponse serviceCCallResponse = callServiceC(jwtAuthentication.getToken());
+		return fromServiceB(jwtAuthentication, request, serviceCCallResponse);
 	}
 }

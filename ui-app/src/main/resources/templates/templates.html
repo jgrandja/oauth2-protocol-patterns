@@ -44,7 +44,7 @@
         <div th:fragment="flowA" class="panel panel-default panel-info">
             <div class="panel-heading">
                 <h2 class="panel-title">
-                    <a href="#" th:href="@{/oauth2-flows/flow-a}">UI-App &rarr; Service-A</a>
+                    <a href="#" th:href="@{/flow-a}">UI-App &rarr; Service-A</a>
                 </h2>
             </div>
             <div th:if="${flowACall}" class="panel-body">
@@ -74,7 +74,7 @@
         <div th:fragment="flowAB" class="panel panel-default panel-info">
             <div class="panel-heading">
                 <h2 class="panel-title">
-                    <a href="#" th:href="@{/oauth2-flows/flow-ab}">UI-App &rarr; Service-A, Service-B</a>
+                    <a href="#" th:href="@{/flow-ab}">UI-App &rarr; Service-A, Service-B</a>
                 </h2>
             </div>
             <div th:if="${flowABCall}" class="panel-body">
@@ -105,7 +105,7 @@
         <div th:fragment="flowABCTokenRelay" class="panel panel-default panel-info">
             <div class="panel-heading">
                 <h2 class="panel-title">
-                    <a href="#" th:href="@{/oauth2-flows/flow-abc?flowType=token_relay}"><strong>Token Relay:</strong> UI-App &rarr; Service-A, Service-B &nbsp;/&nbsp; Service-B &rarr; Service-C</a>
+                    <a href="#" th:href="@{/flow-abc?flowType=token_relay}"><strong>Token Relay:</strong> UI-App &rarr; Service-A, Service-B &nbsp;/&nbsp; Service-B &rarr; Service-C</a>
                 </h2>
             </div>
             <div th:if="${flowABCCall_token_relay}" class="panel-body">
@@ -137,7 +137,7 @@
         <div th:fragment="flowABCTokenExchange" class="panel panel-default panel-info">
             <div class="panel-heading">
                 <h2 class="panel-title">
-                    <a href="#" th:href="@{/oauth2-flows/flow-abc?flowType=token_exchange}"><strong>Token Exchange:</strong> UI-App &rarr; Service-A, Service-B &nbsp;/&nbsp; Service-B &rarr; Service-C</a>
+                    <a href="#" th:href="@{/flow-abc?flowType=token_exchange}"><strong>Token Exchange:</strong> UI-App &rarr; Service-A, Service-B &nbsp;/&nbsp; Service-B &rarr; Service-C</a>
                 </h2>
             </div>
             <div th:if="${flowABCCall_token_exchange}" class="panel-body">
@@ -170,7 +170,7 @@
         <div th:fragment="flowABCClientCredentials" class="panel panel-default panel-info">
             <div class="panel-heading">
                 <h2 class="panel-title">
-                    <a href="#" th:href="@{/oauth2-flows/flow-abc?flowType=client_credentials}"><strong>Client Credentials:</strong> UI-App &rarr; Service-A, Service-B &nbsp;/&nbsp; Service-B &rarr; Service-C</a>
+                    <a href="#" th:href="@{/flow-abc?flowType=client_credentials}"><strong>Client Credentials:</strong> UI-App &rarr; Service-A, Service-B &nbsp;/&nbsp; Service-B &rarr; Service-C</a>
                 </h2>
             </div>
             <div th:if="${flowABCCall_client_credentials}" class="panel-body">

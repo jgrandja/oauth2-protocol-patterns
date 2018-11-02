@@ -31,21 +31,21 @@ oauth:
       authorized-grant-types: authorization_code
       scope: authority-a
       authorities: uaa.resource
-      redirect-uri: http://localhost:8080/oauth2-flows/flow-a
+      redirect-uri: http://localhost:8080/flow-a
     client-ab:
       name: Client AB
       secret: secret
       authorized-grant-types: authorization_code
       scope: authority-a,authority-b
       authorities: uaa.resource
-      redirect-uri: http://localhost:8080/oauth2-flows/flow-ab
+      redirect-uri: http://localhost:8080/flow-ab
     client-abc:
       name: Client ABC
       secret: secret
       authorized-grant-types: authorization_code,urn:ietf:params:oauth:grant-type:jwt-bearer
       scope: authority-a,authority-b,authority-c
       authorities: uaa.resource
-      redirect-uri: http://localhost:8080/oauth2-flows/flow-abc
+      redirect-uri: http://localhost:8080/flow-abc
     client-c:
       secret: secret
       authorized-grant-types: client_credentials

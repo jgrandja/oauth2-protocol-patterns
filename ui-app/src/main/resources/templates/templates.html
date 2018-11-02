@@ -51,9 +51,9 @@
                 <table class="table table-condensed">
                     <thead>
                     <tr class="row">
-                        <td class="col-md-12">
+                        <th class="col-md-12">
                             <h4>Flow Sequence</h4>
-                        </td>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -67,7 +67,8 @@
                     </tr>
                     </tbody>
                 </table>
-                <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowACall})"></span>
+                <span th:replace="::flowCall (flowCall=${flowACall})"></span>
+                <span th:replace="::sessionState"></span>
             </div>
         </div>
         <!-- Flow AB -->
@@ -81,9 +82,9 @@
                 <table class="table table-condensed">
                     <thead>
                     <tr class="row">
-                        <td class="col-md-12">
+                        <th class="col-md-12">
                             <h4>Flow Sequence</h4>
-                        </td>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -98,7 +99,8 @@
                     </tr>
                     </tbody>
                 </table>
-                <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowABCall})"></span>
+                <span th:replace="::flowCall (flowCall=${flowABCall})"></span>
+                <span th:replace="::sessionState"></span>
             </div>
         </div>
         <!-- Flow ABC (Token Relay) -->
@@ -112,9 +114,9 @@
                 <table class="table table-condensed">
                     <thead>
                     <tr class="row">
-                        <td class="col-md-12">
+                        <th class="col-md-12">
                             <h4>Flow Sequence</h4>
-                        </td>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -130,7 +132,8 @@
                     </tr>
                     </tbody>
                 </table>
-                <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowABCCall_token_relay})"></span>
+                <span th:replace="::flowCall (flowCall=${flowABCCall_token_relay})"></span>
+                <span th:replace="::sessionState"></span>
             </div>
         </div>
         <!-- Flow ABC (Token Exchange) -->
@@ -144,9 +147,9 @@
                 <table class="table table-condensed">
                     <thead>
                     <tr class="row">
-                        <td class="col-md-12">
+                        <th class="col-md-12">
                             <h4>Flow Sequence</h4>
-                        </td>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -163,7 +166,8 @@
                     </tr>
                     </tbody>
                 </table>
-                <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowABCCall_token_exchange})"></span>
+                <span th:replace="::flowCall (flowCall=${flowABCCall_token_exchange})"></span>
+                <span th:replace="::sessionState"></span>
             </div>
         </div>
         <!-- Flow ABC (Client Credentials) -->
@@ -177,9 +181,9 @@
                 <table class="table table-condensed">
                     <thead>
                     <tr class="row">
-                        <td class="col-md-12">
+                        <th class="col-md-12">
                             <h4>Flow Sequence</h4>
-                        </td>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -196,24 +200,27 @@
                     </tr>
                     </tbody>
                 </table>
-                <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowABCCall_client_credentials})"></span>
+                <span th:replace="::flowCall (flowCall=${flowABCCall_client_credentials})"></span>
+                <span th:replace="::sessionState"></span>
             </div>
         </div>
-        <!-- Service Call Sequence -->
+        <!-- Flow Call -->
+        <span th:fragment="flowCall (flowCall)" th:each="serviceCall : ${flowCall.serviceCallResponses}">
+            <div th:replace="::serviceCall (serviceCaller=${flowCall},serviceCallee=${serviceCall})"></div>
+        </span>
+        <!-- Service Call -->
         <table th:fragment="serviceCall (serviceCaller, serviceCallee)" class="table table-striped">
             <thead>
             <tr class="row">
-                <td class="col-md-12" colspan="2">
+                <th class="col-md-12" colspan="2">
                     <h4>
-                        <span th:if="${serviceCaller}">
-                            <span th:text="${#strings.toUpperCase(serviceCaller.serviceName)}"></span>
-                            <small th:text="${serviceCaller.serviceUri}"></small>
-                            <span> &rarr; </span>
-                        </span>
+                        <span th:text="${#strings.toUpperCase(serviceCaller.serviceName)}"></span>
+                        <small th:text="${serviceCaller.serviceUri}"></small>
+                        <span> &rarr; </span>
                         <span th:text="${#strings.toUpperCase(serviceCallee.serviceName)}"></span>
                         <small th:text="${serviceCallee.serviceUri}"></small>
                     </h4>
-                </td>
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -246,6 +253,51 @@
             </tr>
             </tbody>
         </table>
+        <!-- Session State -->
+        <div th:fragment="sessionState" class="panel panel-default panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><strong>Session State</strong> <small>(<span th:text="${#session.id}"></span>)</small></h3>
+            </div>
+            <div class="panel-body">
+                <div style="float:left">
+                    <span th:replace="::idTokenClaims"></span>
+                </div>
+                <div style="float:right">
+                    <span th:replace="::clientRegistrations"></span>
+                </div>
+            </div>
+        </div>
+        <!-- ID Token Claims -->
+        <div th:fragment="idTokenClaims">
+            <h4>ID Token Claims</h4>
+            <ul class="list-group">
+                <li class="list-group-item" th:each="claim : ${idTokenClaims}">
+                    <strong th:text="${claim.key}">key</strong>: <span th:text="${claim.value}">value</span>
+                </li>
+            </ul>
+        </div>
+        <!-- Client Registrations -->
+        <div th:fragment="clientRegistrations">
+            <h4>Client Registrations</h4>
+            <table class="table table-bordered">
+                <thead>
+                <tr class="row">
+                    <th>Client Id</th>
+                    <th>Authorization Grant</th>
+                    <th>Authorized</th>
+                    <th>Scopes</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="row" th:each="authorizedRegistration : ${authorizedClientRegistrations}">
+                    <td th:text="${authorizedRegistration.clientRegistration.clientId}">clientId</td>
+                    <td th:text="${authorizedRegistration.clientRegistration.authorizationGrantType.value}">authorizationGrantType</td>
+                    <td th:text="${authorizedRegistration.authorized}">authorized</td>
+                    <td th:text="${#strings.setJoin(authorizedRegistration.authorizedScopes,', ')}">authorizedScopes</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <!-- Footer -->
         <div th:fragment="footer">
             <footer>

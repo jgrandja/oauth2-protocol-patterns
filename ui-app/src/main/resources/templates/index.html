@@ -12,81 +12,39 @@
         <div th:replace="templates::header"></div>
         <div class="container">
             <div class="page-header">
+                <div style="float:right;">
+                    <a target="_blank" th:href="@{https://github.com/jgrandja/oauth2-protocol-patterns}">
+                        <img th:src="@{/assets/img/github.png}">
+                    </a>
+                </div>
                 <h1>OAuth 2.0 Flows <small>with Spring Security 5</small></h1>
             </div>
-            <div>
-                <!-- Flow A -->
-                <div class="panel panel-default panel-info">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">
-                            <strong><u><a href="#" th:href="@{/oauth2-flows/flow-a}">Flow A</a></u></strong>
-                        </h2>
-                    </div>
-                    <div class="panel-body">
-                        <span th:replace="templates::flowASequence"></span>
-                        <span th:if="${flowACall}">
-                            <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowACall})"></span>
-                        </span>
-                    </div>
-                </div>
-                <!-- Flow AB -->
-                <div class="panel panel-default panel-info">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">
-                            <strong><u><a href="#" th:href="@{/oauth2-flows/flow-ab}">Flow AB</a></u></strong>
-                        </h2>
-                    </div>
-                    <div class="panel-body">
-                        <span th:replace="templates::flowABSequence"></span>
-                        <span th:if="${flowABCall}">
-                            <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowABCall})"></span>
-                        </span>
-                    </div>
-                </div>
-                <!-- Flow ABC (Token Relay) -->
-                <div class="panel panel-default panel-info">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">
-                            <strong><u><a href="#" th:href="@{/oauth2-flows/flow-abc?flowType=token_relay}">Flow ABC (Token Relay)</a></u></strong>
-                        </h2>
-                    </div>
-                    <div class="panel-body">
-                        <span th:replace="templates::flowABCSequenceTokenRelay"></span>
-                        <span th:if="${flowABCCall_token_relay}">
-                            <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowABCCall_token_relay})"></span>
-                        </span>
-                    </div>
-                </div>
-                <!-- Flow ABC (Token Exchange) -->
-                <div class="panel panel-default panel-info">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">
-                            <strong><u><a href="#" th:href="@{/oauth2-flows/flow-abc?flowType=token_exchange}">Flow ABC (Token Exchange)</a></u></strong>
-                        </h2>
-                    </div>
-                    <div class="panel-body">
-                        <span th:replace="templates::flowABCSequenceTokenExchange"></span>
-                        <span th:if="${flowABCCall_token_exchange}">
-                            <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowABCCall_token_exchange})"></span>
-                        </span>
-                    </div>
-                </div>
-                <!-- Flow ABC (Client Credentials) -->
-                <div class="panel panel-default panel-info">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">
-                            <strong><u><a href="#" th:href="@{/oauth2-flows/flow-abc?flowType=client_credentials}">Flow ABC (Client Credentials)</a></u></strong>
-                        </h2>
-                    </div>
-                    <div class="panel-body">
-                        <span th:replace="templates::flowABCSequenceClientCredentials"></span>
-                        <span th:if="${flowABCCall_client_credentials}">
-                            <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowABCCall_client_credentials})"></span>
-                        </span>
-                    </div>
-                </div>
+            <div th:if="${#bools.isFalse(flowActive)}">
+                <span th:replace="templates::flowA"></span>
+                <span th:replace="templates::flowAB"></span>
+                <span th:replace="templates::flowABCTokenRelay"></span>
+                <span th:replace="templates::flowABCTokenExchange"></span>
+                <span th:replace="templates::flowABCClientCredentials"></span>
+            </div>
+            <div th:if="${#bools.isTrue(flowActive)}">
+                <span th:if="${flowACall}">
+                    <span th:replace="templates::flowA"></span>
+                </span>
+                <span th:if="${flowABCall}">
+                    <span th:replace="templates::flowAB"></span>
+                </span>
+                <span th:if="${flowABCCall_token_relay}">
+                    <span th:replace="templates::flowABCTokenRelay"></span>
+                </span>
+                <span th:if="${flowABCCall_token_exchange}">
+                    <span th:replace="templates::flowABCTokenExchange"></span>
+                </span>
+                <span th:if="${flowABCCall_client_credentials}">
+                    <span th:replace="templates::flowABCClientCredentials"></span>
+                </span>
             </div>
         </div>
+        <br />
         <div th:replace="templates::footer"></div>
         <script src="/webjars/jquery/jquery.min.js" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script src="/webjars/bootstrap/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>

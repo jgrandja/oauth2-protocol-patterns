@@ -63,6 +63,7 @@ public class OAuth2FlowsController {
 		ServiceCallResponse serviceACallResponse = callService(ServicesConfig.SERVICE_A, clientA);
 
 		model.put("flowACall", fromUiApp(oauth2Authentication, request, serviceACallResponse));
+		model.put("flowActive", true);
 
 		return "index";
 	}
@@ -77,6 +78,7 @@ public class OAuth2FlowsController {
 		ServiceCallResponse serviceBCallResponse = callService(ServicesConfig.SERVICE_B, clientAB);
 
 		model.put("flowABCall", fromUiApp(oauth2Authentication, request, serviceACallResponse, serviceBCallResponse));
+		model.put("flowActive", true);
 
 		return "index";
 	}
@@ -99,6 +101,7 @@ public class OAuth2FlowsController {
 		ServiceCallResponse serviceBCallResponse = callService(ServicesConfig.SERVICE_B, clientABC, params);
 
 		model.put(modelAttr, fromUiApp(oauth2Authentication, request, serviceACallResponse, serviceBCallResponse));
+		model.put("flowActive", true);
 
 		return "index";
 	}

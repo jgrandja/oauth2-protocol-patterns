@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css" th:href="@{/webjars/bootstrap/css/bootstrap.css}" />
     </head>
     <body>
+        <!-- Header -->
         <div th:fragment="header">
             <nav class="navbar navbar-default">
                 <div class="container">
@@ -39,115 +40,166 @@
                 </div>
             </nav>
         </div>
-        <!-- Flow A Sequence -->
-        <table th:fragment="flowASequence" class="table table-condensed">
-            <thead>
-            <tr class="row">
-                <td class="col-md-12">
-                    <h4>Flow Sequence</h4>
-                </td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="row">
-                <td class="col-md-12">
-                    <ol>
-                        <li><b>UI-App</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
-                        <li><b>UI-App</b> calls <b>Service-A</b></li>
-                    </ol>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <!-- Flow AB Sequence -->
-        <table th:fragment="flowABSequence" class="table table-condensed">
-            <thead>
-            <tr class="row">
-                <td class="col-md-12">
-                    <h4>Flow Sequence</h4>
-                </td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="row">
-                <td class="col-md-12">
-                    <ol>
-                        <li><b>UI-App</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
-                        <li><b>UI-App</b> calls <b>Service-A</b></li>
-                        <li><b>UI-App</b> calls <b>Service-B</b></li>
-                    </ol>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <!-- Flow ABC Sequence (Token Relay) -->
-        <table th:fragment="flowABCSequenceTokenRelay" class="table table-condensed">
-            <thead>
-            <tr class="row">
-                <td class="col-md-12">
-                    <h4>Flow Sequence</h4>
-                </td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="row">
-                <td class="col-md-12">
-                    <ol>
-                        <li><b>UI-App</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
-                        <li><b>UI-App</b> calls <b>Service-A</b></li>
-                        <li><b>UI-App</b> calls <b>Service-B</b></li>
-                        <li><b>Service-B</b> calls <b>Service-C</b> using <em>Token Relay</em></li>
-                    </ol>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <!-- Flow ABC Sequence (Token Exchange) -->
-        <table th:fragment="flowABCSequenceTokenExchange" class="table table-condensed">
-            <thead>
-            <tr class="row">
-                <td class="col-md-12">
-                    <h4>Flow Sequence</h4>
-                </td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="row">
-                <td class="col-md-12">
-                    <ol>
-                        <li><b>UI-App</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
-                        <li><b>UI-App</b> calls <b>Service-A</b></li>
-                        <li><b>UI-App</b> calls <b>Service-B</b></li>
-                        <li><b>Service-B</b> obtains <i>access token</i> using <span style="font-family:monospace">urn:ietf:params:oauth:grant-type:jwt-bearer</span> grant</li>
-                        <li><b>Service-B</b> calls <b>Service-C</b></li>
-                    </ol>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <!-- Flow ABC Sequence (Client Credentials) -->
-        <table th:fragment="flowABCSequenceClientCredentials" class="table table-condensed">
-            <thead>
-            <tr class="row">
-                <td class="col-md-12">
-                    <h4>Flow Sequence</h4>
-                </td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="row">
-                <td class="col-md-12">
-                    <ol>
-                        <li><b>UI-App</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
-                        <li><b>UI-App</b> calls <b>Service-A</b></li>
-                        <li><b>UI-App</b> calls <b>Service-B</b></li>
-                        <li><b>Service-B</b> obtains <i>access token</i> using <span style="font-family:monospace">client_credentials</span> grant</li>
-                        <li><b>Service-B</b> calls <b>Service-C</b></li>
-                    </ol>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <!-- Flow A -->
+        <div th:fragment="flowA" class="panel panel-default panel-info">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <a href="#" th:href="@{/oauth2-flows/flow-a}">UI-App &rarr; Service-A</a>
+                </h2>
+            </div>
+            <div th:if="${flowACall}" class="panel-body">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr class="row">
+                        <td class="col-md-12">
+                            <h4>Flow Sequence</h4>
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="row">
+                        <td class="col-md-12">
+                            <ol>
+                                <li><b>UI-App</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
+                                <li><b>UI-App</b> calls <b>Service-A</b></li>
+                            </ol>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowACall})"></span>
+            </div>
+        </div>
+        <!-- Flow AB -->
+        <div th:fragment="flowAB" class="panel panel-default panel-info">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <a href="#" th:href="@{/oauth2-flows/flow-ab}">UI-App &rarr; Service-A, Service-B</a>
+                </h2>
+            </div>
+            <div th:if="${flowABCall}" class="panel-body">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr class="row">
+                        <td class="col-md-12">
+                            <h4>Flow Sequence</h4>
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="row">
+                        <td class="col-md-12">
+                            <ol>
+                                <li><b>UI-App</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
+                                <li><b>UI-App</b> calls <b>Service-A</b></li>
+                                <li><b>UI-App</b> calls <b>Service-B</b></li>
+                            </ol>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowABCall})"></span>
+            </div>
+        </div>
+        <!-- Flow ABC (Token Relay) -->
+        <div th:fragment="flowABCTokenRelay" class="panel panel-default panel-info">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <a href="#" th:href="@{/oauth2-flows/flow-abc?flowType=token_relay}"><strong>Token Relay:</strong> UI-App &rarr; Service-A, Service-B &nbsp;/&nbsp; Service-B &rarr; Service-C</a>
+                </h2>
+            </div>
+            <div th:if="${flowABCCall_token_relay}" class="panel-body">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr class="row">
+                        <td class="col-md-12">
+                            <h4>Flow Sequence</h4>
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="row">
+                        <td class="col-md-12">
+                            <ol>
+                                <li><b>UI-App</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
+                                <li><b>UI-App</b> calls <b>Service-A</b></li>
+                                <li><b>UI-App</b> calls <b>Service-B</b></li>
+                                <li><b>Service-B</b> calls <b>Service-C</b> using <em>Token Relay</em></li>
+                            </ol>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowABCCall_token_relay})"></span>
+            </div>
+        </div>
+        <!-- Flow ABC (Token Exchange) -->
+        <div th:fragment="flowABCTokenExchange" class="panel panel-default panel-info">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <a href="#" th:href="@{/oauth2-flows/flow-abc?flowType=token_exchange}"><strong>Token Exchange:</strong> UI-App &rarr; Service-A, Service-B &nbsp;/&nbsp; Service-B &rarr; Service-C</a>
+                </h2>
+            </div>
+            <div th:if="${flowABCCall_token_exchange}" class="panel-body">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr class="row">
+                        <td class="col-md-12">
+                            <h4>Flow Sequence</h4>
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="row">
+                        <td class="col-md-12">
+                            <ol>
+                                <li><b>UI-App</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
+                                <li><b>UI-App</b> calls <b>Service-A</b></li>
+                                <li><b>UI-App</b> calls <b>Service-B</b></li>
+                                <li><b>Service-B</b> obtains <i>access token</i> using <span style="font-family:monospace">urn:ietf:params:oauth:grant-type:jwt-bearer</span> grant</li>
+                                <li><b>Service-B</b> calls <b>Service-C</b></li>
+                            </ol>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowABCCall_token_exchange})"></span>
+            </div>
+        </div>
+        <!-- Flow ABC (Client Credentials) -->
+        <div th:fragment="flowABCClientCredentials" class="panel panel-default panel-info">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <a href="#" th:href="@{/oauth2-flows/flow-abc?flowType=client_credentials}"><strong>Client Credentials:</strong> UI-App &rarr; Service-A, Service-B &nbsp;/&nbsp; Service-B &rarr; Service-C</a>
+                </h2>
+            </div>
+            <div th:if="${flowABCCall_client_credentials}" class="panel-body">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr class="row">
+                        <td class="col-md-12">
+                            <h4>Flow Sequence</h4>
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="row">
+                        <td class="col-md-12">
+                            <ol>
+                                <li><b>UI-App</b> obtains <i>access token</i> using <span style="font-family:monospace">authorization_code</span> grant</li>
+                                <li><b>UI-App</b> calls <b>Service-A</b></li>
+                                <li><b>UI-App</b> calls <b>Service-B</b></li>
+                                <li><b>Service-B</b> obtains <i>access token</i> using <span style="font-family:monospace">client_credentials</span> grant</li>
+                                <li><b>Service-B</b> calls <b>Service-C</b></li>
+                            </ol>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <span th:replace="templates::serviceCall (serviceCaller=null,serviceCallee=${flowABCCall_client_credentials})"></span>
+            </div>
+        </div>
+        <!-- Service Call Sequence -->
         <table th:fragment="serviceCall (serviceCaller, serviceCallee)" class="table table-striped">
             <thead>
             <tr class="row">
@@ -194,6 +246,7 @@
             </tr>
             </tbody>
         </table>
+        <!-- Footer -->
         <div th:fragment="footer">
             <footer>
                 <div class="container hidden-print">

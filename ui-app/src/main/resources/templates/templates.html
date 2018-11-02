@@ -187,8 +187,8 @@
                     <td class="col-md-8" th:text="${info.value}">value</td>
                 </tr>
             </span>
-            <tr class="row" th:if="${serviceCallee.serviceCalls}">
-                <span th:each="nextServiceCallee : ${serviceCallee.serviceCalls}">
+            <tr class="row" th:if="${serviceCallee.serviceCallResponses}">
+                <span th:each="nextServiceCallee : ${serviceCallee.serviceCallResponses}">
                     <div th:replace="::serviceCall (serviceCaller=${serviceCallee},serviceCallee=${nextServiceCallee})"></div>
                 </span>
             </tr>

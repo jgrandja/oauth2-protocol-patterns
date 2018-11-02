@@ -34,16 +34,17 @@ public class ServiceCController {
 	private static final String SERVICE_C = "service-c";
 
 	@GetMapping
-	public ServiceCall serviceC(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication, HttpServletRequest request) {
-		ServiceCall serviceCall = new ServiceCall();
-		serviceCall.setServiceName(SERVICE_C);
-		serviceCall.setServiceUri(request.getRequestURL().toString());
-		serviceCall.setJti(jwtAuthentication.getToken().getId());
-		serviceCall.setSub(jwtAuthentication.getToken().getSubject());
-		serviceCall.setAud(jwtAuthentication.getToken().getAudience());
-		serviceCall.setAuthorities(jwtAuthentication.getAuthorities().stream()
+	public ServiceCallResponse serviceC(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication,
+										HttpServletRequest request) {
+		ServiceCallResponse serviceCallResponse = new ServiceCallResponse();
+		serviceCallResponse.setServiceName(SERVICE_C);
+		serviceCallResponse.setServiceUri(request.getRequestURL().toString());
+		serviceCallResponse.setJti(jwtAuthentication.getToken().getId());
+		serviceCallResponse.setSub(jwtAuthentication.getToken().getSubject());
+		serviceCallResponse.setAud(jwtAuthentication.getToken().getAudience());
+		serviceCallResponse.setAuthorities(jwtAuthentication.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 
-		return serviceCall;
+		return serviceCallResponse;
 	}
 }

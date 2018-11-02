@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * @author Joe Grandja
  */
-public class ServiceCall {
+public class ServiceCallResponse {
 	private String serviceName;
 	private String serviceUri;
 	private String jti;
@@ -30,7 +30,7 @@ public class ServiceCall {
 	private List<String> aud = Collections.emptyList();
 	private List<String> authorities = Collections.emptyList();
 	private Map<String, Object> additionalInfo = Collections.emptyMap();
-	private List<ServiceCall> serviceCalls = Collections.emptyList();
+	private List<ServiceCallResponse> serviceCallResponses = Collections.emptyList();
 
 	public String getServiceName() {
 		return this.serviceName;
@@ -88,11 +88,11 @@ public class ServiceCall {
 		this.additionalInfo = additionalInfo;
 	}
 
-	public List<ServiceCall> getServiceCalls() {
-		return this.serviceCalls;
+	public List<ServiceCallResponse> getServiceCallResponses() {
+		return this.serviceCallResponses;
 	}
 
-	public void setServiceCalls(List<ServiceCall> serviceCalls) {
-		this.serviceCalls = serviceCalls;
+	public void setServiceCallResponses(List<ServiceCallResponse> serviceCallResponses) {
+		this.serviceCallResponses = serviceCallResponses;
 	}
 }

@@ -34,16 +34,17 @@ public class ServiceAController {
 	private static final String SERVICE_A = "service-a";
 
 	@GetMapping
-	public ServiceCall serviceA(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication, HttpServletRequest request) {
-		ServiceCall serviceCall = new ServiceCall();
-		serviceCall.setServiceName(SERVICE_A);
-		serviceCall.setServiceUri(request.getRequestURL().toString());
-		serviceCall.setJti(jwtAuthentication.getToken().getId());
-		serviceCall.setSub(jwtAuthentication.getToken().getSubject());
-		serviceCall.setAud(jwtAuthentication.getToken().getAudience());
-		serviceCall.setAuthorities(jwtAuthentication.getAuthorities().stream()
+	public ServiceCallResponse serviceA(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication,
+										HttpServletRequest request) {
+		ServiceCallResponse serviceCallResponse = new ServiceCallResponse();
+		serviceCallResponse.setServiceName(SERVICE_A);
+		serviceCallResponse.setServiceUri(request.getRequestURL().toString());
+		serviceCallResponse.setJti(jwtAuthentication.getToken().getId());
+		serviceCallResponse.setSub(jwtAuthentication.getToken().getSubject());
+		serviceCallResponse.setAud(jwtAuthentication.getToken().getAudience());
+		serviceCallResponse.setAuthorities(jwtAuthentication.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 
-		return serviceCall;
+		return serviceCallResponse;
 	}
 }

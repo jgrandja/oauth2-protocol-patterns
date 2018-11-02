@@ -60,9 +60,9 @@ public class OAuth2FlowsController {
 						HttpServletRequest request,
 						Map<String, Object> model) {
 
-		ServiceCall serviceACall = callService(ServicesConfig.SERVICE_A, clientA);
+		ServiceCallResponse serviceACallResponse = callService(ServicesConfig.SERVICE_A, clientA);
 
-		model.put("flowACall", fromUiApp(oauth2Authentication, request, serviceACall));
+		model.put("flowACall", fromUiApp(oauth2Authentication, request, serviceACallResponse));
 
 		return "index";
 	}
@@ -73,10 +73,10 @@ public class OAuth2FlowsController {
 						HttpServletRequest request,
 						Map<String, Object> model) {
 
-		ServiceCall serviceACall = callService(ServicesConfig.SERVICE_A, clientAB);
-		ServiceCall serviceBCall = callService(ServicesConfig.SERVICE_B, clientAB);
+		ServiceCallResponse serviceACallResponse = callService(ServicesConfig.SERVICE_A, clientAB);
+		ServiceCallResponse serviceBCallResponse = callService(ServicesConfig.SERVICE_B, clientAB);
 
-		model.put("flowABCall", fromUiApp(oauth2Authentication, request, serviceACall, serviceBCall));
+		model.put("flowABCall", fromUiApp(oauth2Authentication, request, serviceACallResponse, serviceBCallResponse));
 
 		return "index";
 	}
@@ -87,7 +87,7 @@ public class OAuth2FlowsController {
 							HttpServletRequest request,
 							Map<String, Object> model) {
 
-		ServiceCall serviceACall = callService(ServicesConfig.SERVICE_A, clientABC);
+		ServiceCallResponse serviceACallResponse = callService(ServicesConfig.SERVICE_A, clientABC);
 
 		String modelAttr = "flowABCCall";
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -96,18 +96,18 @@ public class OAuth2FlowsController {
 			params.put(FLOW_TYPE_PARAMETER, Collections.singletonList(flowType));
 			modelAttr += "_" + flowType;
 		}
-		ServiceCall serviceBCall = callService(ServicesConfig.SERVICE_B, clientABC, params);
+		ServiceCallResponse serviceBCallResponse = callService(ServicesConfig.SERVICE_B, clientABC, params);
 
-		model.put(modelAttr, fromUiApp(oauth2Authentication, request, serviceACall, serviceBCall));
+		model.put(modelAttr, fromUiApp(oauth2Authentication, request, serviceACallResponse, serviceBCallResponse));
 
 		return "index";
 	}
 
-	private ServiceCall callService(String serviceId, OAuth2AuthorizedClient authorizedClient) {
+	private ServiceCallResponse callService(String serviceId, OAuth2AuthorizedClient authorizedClient) {
 		return callService(serviceId, authorizedClient, new LinkedMultiValueMap<>());
 	}
 
-	private ServiceCall callService(String serviceId, OAuth2AuthorizedClient authorizedClient, MultiValueMap<String, String> params) {
+	private ServiceCallResponse callService(String serviceId, OAuth2AuthorizedClient authorizedClient, MultiValueMap<String, String> params) {
 		ServicesConfig.ServiceConfig serviceConfig = this.servicesConfig.getConfig(serviceId);
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(serviceConfig.getUri());
 		if (!params.isEmpty()) {
@@ -120,28 +120,28 @@ public class OAuth2FlowsController {
 				.uri(uri)
 				.attributes(oauth2AuthorizedClient(authorizedClient))
 				.retrieve()
-				.bodyToMono(ServiceCall.class)
+				.bodyToMono(ServiceCallResponse.class)
 				.block();
 	}
 
-	private ServiceCall fromUiApp(OAuth2AuthenticationToken oauth2Authentication,
-								  HttpServletRequest request,
-								  ServiceCall... serviceCalls) {
+	private ServiceCallResponse fromUiApp(OAuth2AuthenticationToken oauth2Authentication,
+										  HttpServletRequest request,
+										  ServiceCallResponse... serviceCallResponses) {
 
 		OidcUser oidcUser = (OidcUser) oauth2Authentication.getPrincipal();
 
-		ServiceCall serviceCall = new ServiceCall();
-		serviceCall.setServiceName(ServicesConfig.UI_APP);
-		serviceCall.setServiceUri(request.getRequestURL().toString());
-		serviceCall.setJti("(opaque to client)");
-		serviceCall.setSub(oidcUser.getSubject());
-		serviceCall.setAud(oidcUser.getAudience());
-		serviceCall.setAuthorities(oauth2Authentication.getAuthorities().stream()
+		ServiceCallResponse serviceCallResponse = new ServiceCallResponse();
+		serviceCallResponse.setServiceName(ServicesConfig.UI_APP);
+		serviceCallResponse.setServiceUri(request.getRequestURL().toString());
+		serviceCallResponse.setJti("(opaque to client)");
+		serviceCallResponse.setSub(oidcUser.getSubject());
+		serviceCallResponse.setAud(oidcUser.getAudience());
+		serviceCallResponse.setAuthorities(oauth2Authentication.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
-		if (serviceCalls != null) {
-			serviceCall.setServiceCalls(Arrays.asList(serviceCalls));
+		if (serviceCallResponses != null) {
+			serviceCallResponse.setServiceCallResponses(Arrays.asList(serviceCallResponses));
 		}
 
-		return serviceCall;
+		return serviceCallResponse;
 	}
 }

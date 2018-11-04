@@ -43,7 +43,7 @@ public class ServiceCController {
 		serviceCallResponse.setSub(jwtAuthentication.getToken().getSubject());
 		serviceCallResponse.setAud(jwtAuthentication.getToken().getAudience());
 		serviceCallResponse.setAuthorities(jwtAuthentication.getAuthorities().stream()
-				.map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+				.map(GrantedAuthority::getAuthority).sorted().collect(Collectors.toList()));
 
 		return serviceCallResponse;
 	}

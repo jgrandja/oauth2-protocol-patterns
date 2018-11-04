@@ -83,7 +83,7 @@ abstract class AbstractFlowController {
 		serviceCallResponse.setSub(oidcUser.getSubject());
 		serviceCallResponse.setAud(oidcUser.getAudience());
 		serviceCallResponse.setAuthorities(oauth2Authentication.getAuthorities().stream()
-				.map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+				.map(GrantedAuthority::getAuthority).sorted().collect(Collectors.toList()));
 		if (serviceCallResponses != null) {
 			serviceCallResponse.setServiceCallResponses(Arrays.asList(serviceCallResponses));
 		}

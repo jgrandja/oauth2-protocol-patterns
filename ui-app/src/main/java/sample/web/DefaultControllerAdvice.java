@@ -31,11 +31,14 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -65,7 +68,13 @@ public class DefaultControllerAdvice {
 
 	@ModelAttribute("idTokenClaims")
 	Map<String, Object> idTokenClaims(@AuthenticationPrincipal OidcUser oidcUser) {
-		return oidcUser != null ? oidcUser.getIdToken().getClaims() : Collections.emptyMap();
+		if (oidcUser == null) {
+			return Collections.emptyMap();
+		}
+		final List<String> claimNames = Arrays.asList("iss", "sub", "aud", "azp", "given_name", "family_name", "email");
+		return oidcUser.getClaims().entrySet().stream()
+				.filter(e -> claimNames.contains(e.getKey()))
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	@ModelAttribute("authorizedClientRegistrations")
@@ -78,6 +87,7 @@ public class DefaultControllerAdvice {
 					new AuthorizedClientRegistration(registration, authorizedClient));
 
 		});
+		authorizedClientRegistrations.sort(Comparator.comparing(e -> e.getClientRegistration().getClientId()));
 		return authorizedClientRegistrations;
 	}
 
@@ -125,7 +135,7 @@ public class DefaultControllerAdvice {
 		}
 
 		public Set<String> getAuthorizedScopes() {
-			return isAuthorized() ? getAuthorizedClient().getAccessToken().getScopes() : Collections.emptySet();
+			return isAuthorized() ? new TreeSet<>(getAuthorizedClient().getAccessToken().getScopes()) : Collections.emptySet();
 		}
 	}
 }

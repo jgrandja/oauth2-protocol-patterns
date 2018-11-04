@@ -3,32 +3,31 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.5'
         classpath 'com.bmuschko:gradle-cargo-plugin:2.3'
     }
 }
 
+apply plugin: 'com.bmuschko.tomcat'
 apply plugin: 'com.bmuschko.cargo'
 
 repositories {
     mavenCentral()
 }
 
-
-if (System.getenv("TOMCAT_HOME") == null) {
-  ext['tomcatHomeDir'] = '/Users/jgrandja/DevTools/apache-tomcat-8.0.33'
-} else {
-  ext['tomcatHomeDir'] = System.getenv("TOMCAT_HOME");
-}
-
-ext {
-    uaaVersion = '4.20.0'
-}
+ext.tomcatHomeDir = System.getenv("TOMCAT_HOME")
+ext.tomcatEmbedVersion = '8.0.42'
+ext.uaaVersion = '4.20.0'
 
 configurations {
     uaa
 }
 
 dependencies {
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatEmbedVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatEmbedVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatEmbedVersion}"
+
     uaa("org.cloudfoundry.identity:cloudfoundry-identity-uaa:${uaaVersion}@war") {
         artifact {
             name = "cloudfoundry-identity-uaa"
@@ -36,6 +35,12 @@ dependencies {
             type = 'war'
         }
     }
+}
+
+tomcatRunWar {
+    webApp = file("cloudfoundry-identity-uaa-${uaaVersion}.war")
+    contextPath = "uaa"
+    httpPort = 8090
 }
 
 task downloadUAA(type: Copy) {
@@ -55,7 +60,6 @@ cargo {
     local {
         homeDir = file("$tomcatHomeDir")
         outputFile = file('uaa-server.log')
-
         systemProperties {
             property "UAA_CONFIG_PATH", "$projectDir"
         }

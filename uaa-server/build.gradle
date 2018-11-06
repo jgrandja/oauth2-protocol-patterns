@@ -13,7 +13,6 @@ repositories {
     mavenCentral()
 }
 
-ext.tomcatHomeDir = System.getenv("TOMCAT_HOME")
 ext.uaaVersion = '4.20.0'
 
 configurations {
@@ -32,21 +31,30 @@ dependencies {
 
 task downloadUAA(type: Copy) {
     from configurations.uaa
-    into "$projectDir"
+    into "$buildDir"
 }
+
+cargoRunLocal.dependsOn downloadUAA
+
+task uaa(dependsOn: cargoRunLocal) {}
 
 cargo {
     containerId = 'tomcat8x'
     port = 8090
 
     deployable {
-        file = file("cloudfoundry-identity-uaa-${uaaVersion}.war")
+        file = file("$buildDir/cloudfoundry-identity-uaa-${uaaVersion}.war")
         context = 'uaa'
     }
 
     local {
-        homeDir = file("$tomcatHomeDir")
         outputFile = file('uaa-server.log')
+        installer {
+            installUrl = 'https://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.34/bin/apache-tomcat-8.5.34.zip'
+
+            downloadDir = file("$buildDir/download")
+            extractDir = file("$buildDir/extract")
+        }
         systemProperties {
             property "UAA_CONFIG_PATH", "$projectDir"
         }

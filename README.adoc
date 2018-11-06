@@ -1,14 +1,9 @@
 = OAuth 2.0 Protocols and Patterns
 
-== Initial Setup
-
-* Download UAA -> `./gradlew -b uaa-server/build.gradle downloadUAA`
-
 == Run the Sample
 
 * Build the sample -> `./gradlew clean build`
-* Run UAA Server
-** Local Tomcat -> `./gradlew -b uaa-server/build.gradle cargoRunLocal` (*_TOMCAT_HOME environment variable must be set_*)
+* Run UAA Server -> `./gradlew -b uaa-server/build.gradle uaa`
 * Run UI App -> `./gradlew -b ui-app/build.gradle bootRun`
 * Run Microservice A -> `./gradlew -b microservice-a/build.gradle bootRun`
 * Run Microservice B -> `./gradlew -b microservice-b/build.gradle bootRun`

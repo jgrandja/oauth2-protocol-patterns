@@ -8,7 +8,6 @@
 
 * Build the sample -> `./gradlew clean build`
 * Run UAA Server
-** Embedded Tomcat -> `./gradlew -b uaa-server/build.gradle tomcatRunWar`
 ** Local Tomcat -> `./gradlew -b uaa-server/build.gradle cargoRunLocal` (*_TOMCAT_HOME environment variable must be set_*)
 * Run UI App -> `./gradlew -b ui-app/build.gradle bootRun`
 * Run Microservice A -> `./gradlew -b microservice-a/build.gradle bootRun`

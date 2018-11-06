@@ -48,7 +48,7 @@ cargo {
     }
 
     local {
-        outputFile = file('uaa-server.log')
+        outputFile = file("$buildDir/uaa-server.log")
         installer {
             installUrl = 'https://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.34/bin/apache-tomcat-8.5.34.zip'
 

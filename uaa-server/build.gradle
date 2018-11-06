@@ -13,7 +13,7 @@ repositories {
     mavenCentral()
 }
 
-ext.uaaVersion = '4.20.0'
+ext.uaaVersion = '4.24.0'
 
 configurations {
     uaa

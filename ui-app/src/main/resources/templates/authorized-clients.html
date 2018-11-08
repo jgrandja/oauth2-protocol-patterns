@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>OAuth 2.0 Flows</title>
+        <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico" th:href="@{/assets/img/favicon.ico}"/>
+        <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css" th:href="@{/webjars/bootstrap/css/bootstrap.css}" />
+    </head>
+    <body>
+        <div th:replace="templates::header"></div>
+        <div class="container">
+            <div class="page-header">
+                <div style="float:right;">
+                    <a target="_blank" th:href="@{https://github.com/jgrandja/oauth2-protocol-patterns}">
+                        <img th:src="@{/assets/img/github.png}">
+                    </a>
+                </div>
+                <h1>OAuth 2.0 Flows <small>with Spring Security 5</small></h1>
+            </div>
+            <div>
+                <div class="panel panel-default panel-info">
+                    <div class="panel-heading">
+                        <h2 class="panel-title"><strong>Authorized Clients</strong></h2>
+                    </div>
+                    <div class="panel-body">
+                        <table th:each="authorizedClient : ${authorizedClients}" class="table table-striped">
+                            <thead>
+                            <tr class="row">
+                                <th class="col-md-12" colspan="2">
+                                    <h4>
+                                        <span th:text="${#strings.toUpperCase(authorizedClient.clientId)}"></span>
+                                    </h4>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="row">
+                                <td class="col-md-4">Authorization Grant:</td>
+                                <td class="col-md-8" th:text="${authorizedClient.authorizationGrantType}">authorizationGrantType</td>
+                            </tr>
+                            <tr class="row">
+                                <td class="col-md-4">Scopes:</td>
+                                <td class="col-md-8" th:text="${#strings.setJoin(authorizedClient.scopes,', ')}">scopes</td>
+                            </tr>
+                            <tr class="row">
+                                <td class="col-md-4">Access Token:</td>
+                                <td class="col-md-8" th:text="${authorizedClient.accessTokenValue}" style="word-wrap:break-word;min-width:150px;max-width:150px;white-space:normal;">accessTokenValue</td>
+                            </tr>
+                            <span th:if="${#bools.isTrue(authorizedClient.oidcClient)}">
+                            <tr class="row">
+                                <td class="col-md-4">ID Token:</td>
+                                <td class="col-md-8" th:text="${idTokenValue}" style="word-wrap:break-word;min-width:150px;max-width:150px;white-space:normal;">idTokenValue</td>
+                            </tr>
+                            </span>
+                            <span th:if="${authorizedClient.refreshTokenValue}">
+                            <tr class="row">
+                                <td class="col-md-4">Refresh Token:</td>
+                                <td class="col-md-8" th:text="${authorizedClient.refreshTokenValue}" style="word-wrap:break-word;min-width:150px;max-width:150px;white-space:normal;">refreshTokenValue</td>
+                            </tr>
+                            </span>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div th:replace="templates::footer"></div>
+        <script src="/webjars/jquery/jquery.min.js" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script src="/webjars/bootstrap/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    </body>
+</html>

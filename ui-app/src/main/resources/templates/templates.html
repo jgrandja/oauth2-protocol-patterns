@@ -289,14 +289,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="row" th:each="authorizedRegistration : ${authorizedClientRegistrations}">
-                    <td th:text="${authorizedRegistration.clientRegistration.clientId}">clientId</td>
-                    <td th:text="${authorizedRegistration.clientRegistration.authorizationGrantType.value}">authorizationGrantType</td>
-                    <td th:text="${authorizedRegistration.authorized}">authorized</td>
-                    <td th:text="${#strings.setJoin(authorizedRegistration.authorizedScopes,', ')}">authorizedScopes</td>
+                <tr class="row" th:each="authorizedClientRegistration : ${authorizedClientRegistrations}">
+                    <td th:text="${authorizedClientRegistration.clientId}">clientId</td>
+                    <td th:text="${authorizedClientRegistration.authorizationGrantType}">authorizationGrantType</td>
+                    <td th:text="${authorizedClientRegistration.authorized}">authorized</td>
+                    <td th:text="${#strings.setJoin(authorizedClientRegistration.authorizedScopes,', ')}">authorizedScopes</td>
                 </tr>
                 </tbody>
             </table>
+            <div align="center">
+                <h5><a href="#" th:href="@{/authorized-clients}">View Authorized Clients</a></h5>
+            </div>
         </div>
         <!-- Footer -->
         <div th:fragment="footer">

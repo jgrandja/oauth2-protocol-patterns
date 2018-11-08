@@ -15,14 +15,7 @@
  */
 package sample.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ResolvableType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,17 +23,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * @author Joe Grandja
@@ -48,15 +32,9 @@ import java.util.stream.StreamSupport;
 @ControllerAdvice
 public class DefaultControllerAdvice {
 
-	@Autowired
-	private ClientRegistrationRepository clientRegistrationRepository;
-
-	@Autowired
-	private OAuth2AuthorizedClientService authorizedClientService;
-
 	@ModelAttribute("currentUser")
-	User currentUser(@AuthenticationPrincipal OidcUser oidcUser) {
-		User currentUser = new User();
+	UserModel currentUser(@AuthenticationPrincipal OidcUser oidcUser) {
+		UserModel currentUser = new UserModel();
 		if (oidcUser != null) {
 			currentUser.setUserId(oidcUser.getSubject());
 			currentUser.setFirstName(oidcUser.getGivenName());
@@ -64,40 +42,6 @@ public class DefaultControllerAdvice {
 			currentUser.setEmail(oidcUser.getEmail());
 		}
 		return currentUser;
-	}
-
-	@ModelAttribute("idTokenClaims")
-	Map<String, Object> idTokenClaims(@AuthenticationPrincipal OidcUser oidcUser) {
-		if (oidcUser == null) {
-			return Collections.emptyMap();
-		}
-		final List<String> claimNames = Arrays.asList("iss", "sub", "aud", "azp", "given_name", "family_name", "email");
-		return oidcUser.getClaims().entrySet().stream()
-				.filter(e -> claimNames.contains(e.getKey()))
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-	}
-
-	@ModelAttribute("authorizedClientRegistrations")
-	List<AuthorizedClientRegistration> authorizedClientRegistrations(OAuth2AuthenticationToken oauth2Authentication) {
-		List<AuthorizedClientRegistration> authorizedClientRegistrations = new ArrayList<>();
-		getClientRegistrations().forEach(registration -> {
-			OAuth2AuthorizedClient authorizedClient = this.authorizedClientService.loadAuthorizedClient(
-					registration.getRegistrationId(), oauth2Authentication.getName());
-			authorizedClientRegistrations.add(
-					new AuthorizedClientRegistration(registration, authorizedClient));
-
-		});
-		authorizedClientRegistrations.sort(Comparator.comparing(e -> e.getClientRegistration().getClientId()));
-		return authorizedClientRegistrations;
-	}
-
-	private List<ClientRegistration> getClientRegistrations() {
-		ResolvableType type = ResolvableType.forInstance(this.clientRegistrationRepository).as(Iterable.class);
-		if (type != ResolvableType.NONE && ClientRegistration.class.isAssignableFrom(type.resolveGenerics()[0])) {
-			return StreamSupport.stream(((Iterable<ClientRegistration>) clientRegistrationRepository).spliterator(), false)
-					.collect(Collectors.toList());
-		}
-		return Collections.emptyList();
 	}
 
 	@ExceptionHandler(WebClientResponseException.class)
@@ -110,32 +54,5 @@ public class DefaultControllerAdvice {
 		Map<String, Object> model = new HashMap<>();
 		model.put("errorMessage", errorMessage);
 		return new ModelAndView("error", model);
-	}
-
-	static class AuthorizedClientRegistration {
-		private ClientRegistration clientRegistration;
-		private OAuth2AuthorizedClient authorizedClient;
-
-		AuthorizedClientRegistration(ClientRegistration clientRegistration,
-										OAuth2AuthorizedClient authorizedClient) {
-			this.clientRegistration = clientRegistration;
-			this.authorizedClient = authorizedClient;
-		}
-
-		public ClientRegistration getClientRegistration() {
-			return this.clientRegistration;
-		}
-
-		public OAuth2AuthorizedClient getAuthorizedClient() {
-			return this.authorizedClient;
-		}
-
-		public boolean isAuthorized() {
-			return getAuthorizedClient() != null;
-		}
-
-		public Set<String> getAuthorizedScopes() {
-			return isAuthorized() ? new TreeSet<>(getAuthorizedClient().getAccessToken().getScopes()) : Collections.emptySet();
-		}
 	}
 }

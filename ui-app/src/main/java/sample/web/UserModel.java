@@ -18,7 +18,7 @@ package sample.web;
 /**
  * @author Joe Grandja
  */
-public class User {
+public class UserModel {
 	private String userId;
 	private String firstName;
 	private String lastName;

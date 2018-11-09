@@ -1,14 +1,8 @@
 = OAuth 2.0 Protocols and Patterns
 
-== Warning
-
-The samples in this repo are intended for educational purposes to demonstrate certain
-features of spring security and OAuth2 / OpenIdConnect. DO NOT blindly copy and
-paste code from this sample app into production applications, the goal of this
-sample is not to demonstrate security best practices and make recommendations on how
-to secure your system. Please work with your information security team to
-determine the suitability of using the patterns shown in the sample to you specific
-situation.
+WARNING: The samples in this repo are intended for educational purposes to demonstrate certain features of Spring Security and OAuth 2.0 / OpenID Connect 1.0.
+ *DO NOT* blindly copy/paste code from the samples into production applications.
+Please work with your information security team to determine the suitability of using the patterns shown in the samples.
 
 == Run the Sample
 

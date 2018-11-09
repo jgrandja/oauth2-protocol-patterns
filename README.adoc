@@ -18,5 +18,5 @@ situation.
 * Run Microservice A -> `./gradlew -b microservice-a/build.gradle bootRun`
 * Run Microservice B -> `./gradlew -b microservice-b/build.gradle bootRun`
 * Run Microservice C -> `./gradlew -b microservice-c/build.gradle bootRun`
-* Go to `http://localhost:8080` and login to UAA using one of the registered users in `uaa-server/uaa.yml` under `scim.users`
+* Go to `http://localhost:8080` and login to UAA using *user1/password*
 

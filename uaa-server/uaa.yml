@@ -60,8 +60,7 @@ scim:
     authority-b: Allow access with 'authority-b'
     authority-c: Allow access with 'authority-c'
   users:
-    - jgrandja|password|jgrandja@pivotal.io|Joe|Grandja|uaa.user,profile,email,authority-a,authority-b,authority-c
-    - asaikali|password|asaikali@pivotal.io|Adib|Saikali|uaa.user,profile,email,authority-a,authority-b,authority-c
+    - user1|password|user1@oauth2-flows.io|first1|last1|uaa.user,profile,email,authority-a,authority-b,authority-c
 
 jwt:
   token:

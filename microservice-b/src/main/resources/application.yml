@@ -17,12 +17,12 @@ spring:
           jwk-set-uri: http://localhost:8090/uaa/token_keys
       client:
         registration:
-          client-abc:
+          client-c-exchange:
             provider: uaa
-            client-id: client-abc
+            client-id: client-c
             client-secret: secret
             # NOTE:
-            # The actual grant_type used for client-abc is "urn:ietf:params:oauth:grant-type:jwt-bearer".
+            # The actual grant_type used for client-c is "urn:ietf:params:oauth:grant-type:jwt-bearer".
             # Temporarily configuring with "client_credentials" in order for the `ClientRegistration` to pass validation,
             # since the "jwt-bearer" grant_type is currently not supported in `AuthorizationGrantType`.
             # Used by `DefaultJwtBearerTokenResponseClient`.

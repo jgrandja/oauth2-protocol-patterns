@@ -42,13 +42,15 @@ oauth:
     client-abc:
       name: Client ABC
       secret: secret
-      authorized-grant-types: authorization_code,urn:ietf:params:oauth:grant-type:jwt-bearer
+      authorized-grant-types: authorization_code
       scope: authority-a,authority-b,authority-c
       authorities: uaa.resource
       redirect-uri: http://localhost:8080/flow-abc
     client-c:
+      name: Client C
       secret: secret
-      authorized-grant-types: client_credentials
+      authorized-grant-types: client_credentials,urn:ietf:params:oauth:grant-type:jwt-bearer
+      scope: authority-c
       authorities: authority-c
 
 scim:

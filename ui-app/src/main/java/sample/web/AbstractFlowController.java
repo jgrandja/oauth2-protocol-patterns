@@ -36,6 +36,7 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
  * @author Joe Grandja
  */
 abstract class AbstractFlowController {
+	protected static final String FLOW_TYPE_PARAMETER = "flowType";
 	private final WebClient webClient;
 	private final ServicesConfig servicesConfig;
 

@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping(path = "/service-b", params = {"flowType=token_exchange"})
 public class ServiceBTokenExchangeController extends AbstractFlowController {
-	private static final String CLIENT_ABC = "client-abc";
+	private static final String CLIENT_C_EXCHANGE = "client-c-exchange";
 	private JwtBearerTokenExchanger tokenExchanger;
 
 	public ServiceBTokenExchangeController(WebClient webClient, ServicesConfig servicesConfig,
@@ -45,7 +45,7 @@ public class ServiceBTokenExchangeController extends AbstractFlowController {
 	public ServiceCallResponse serviceB_TokenExchange(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication,
 														HttpServletRequest request) {
 
-		Jwt exchangedJwt = this.tokenExchanger.exchange(jwtAuthentication.getToken(), CLIENT_ABC);
+		Jwt exchangedJwt = this.tokenExchanger.exchange(jwtAuthentication.getToken(), CLIENT_C_EXCHANGE);
 		ServiceCallResponse serviceCCallResponse = callServiceC(exchangedJwt);
 		return fromServiceB(jwtAuthentication, request, serviceCCallResponse);
 	}

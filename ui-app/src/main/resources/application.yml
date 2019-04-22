@@ -22,37 +22,29 @@ spring:
             provider: uaa
             client-id: login-client
             client-secret: secret
-            authorization-grant-type: authorization_code
-            redirect-uri-template: "{baseUrl}/login/oauth2/code/{registrationId}"
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope: openid,profile,email
           client-a:
             provider: uaa
             client-id: client-a
             client-secret: secret
-            authorization-grant-type: authorization_code
-            redirect-uri-template: "{baseUrl}/flow-a"
+            redirect-uri: "{baseUrl}/flow-a"
             scope: authority-a
           client-ab:
             provider: uaa
             client-id: client-ab
             client-secret: secret
-            authorization-grant-type: authorization_code
-            redirect-uri-template: "{baseUrl}/flow-ab"
+            redirect-uri: "{baseUrl}/flow-ab"
             scope: authority-a,authority-b
           client-abc:
             provider: uaa
             client-id: client-abc
             client-secret: secret
-            authorization-grant-type: authorization_code
-            redirect-uri-template: "{baseUrl}/flow-abc"
+            redirect-uri: "{baseUrl}/flow-abc"
             scope: authority-a,authority-b,authority-c
         provider:
           uaa:
-            authorization-uri: http://localhost:8090/uaa/oauth/authorize
-            token-uri: http://localhost:8090/uaa/oauth/token
-            user-info-uri: http://localhost:8090/uaa/userinfo
-            user-name-attribute: sub
-            jwk-set-uri: http://localhost:8090/uaa/token_keys
+            issuer-uri: http://localhost:8090/uaa/oauth/token
 
 oauth2:
   resource:

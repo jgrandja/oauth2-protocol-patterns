@@ -14,7 +14,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8090/uaa/token_keys
+          issuer-uri: http://localhost:8090/uaa/oauth/token
       client:
         registration:
           client-c-exchange:
@@ -36,8 +36,7 @@ spring:
             scope: authority-c
         provider:
           uaa:
-            token-uri: http://localhost:8090/uaa/oauth/token
-            jwk-set-uri: http://localhost:8090/uaa/token_keys
+            issuer-uri: http://localhost:8090/uaa/oauth/token
 
 oauth2:
   resource:

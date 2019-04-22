@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 package sample.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,9 +27,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableConfigurationProperties(ServicesConfig.class)
 public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private OAuth2ResourceServerProperties resourceServerProperties;
-
 	// @formatter:off
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -42,7 +37,6 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 				.and()
 			.oauth2ResourceServer()
 				.jwt()
-					.jwkSetUri(this.resourceServerProperties.getJwt().getJwkSetUri())
 					.and()
 				.and()
 			.oauth2Client();

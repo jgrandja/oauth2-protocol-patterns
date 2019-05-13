@@ -24,6 +24,9 @@
                             <a class="navbar-brand" href="/"><img src="/assets/img/logo.png" th:src="@{/assets/img/logo.png}" /></a>
                         </div>
                         <div class="navbar-collapse collapse" id="navbar">
+                            <ul class="nav navbar-nav navbar-left">
+                                <li><a href="#" th:href="@{/session-state}">Session State</a></li>
+                            </ul>
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="dropdown">
                                     <a id="user-menu" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="${currentUser.firstName} + ' ' + ${currentUser.lastName}">User</a>
@@ -68,7 +71,6 @@
                     </tbody>
                 </table>
                 <span th:replace="::flowCall (flowCall=${flowACall})"></span>
-                <span th:replace="::sessionState"></span>
             </div>
         </div>
         <!-- Flow AB -->
@@ -100,7 +102,6 @@
                     </tbody>
                 </table>
                 <span th:replace="::flowCall (flowCall=${flowABCall})"></span>
-                <span th:replace="::sessionState"></span>
             </div>
         </div>
         <!-- Flow ABC (Token Relay) -->
@@ -133,7 +134,6 @@
                     </tbody>
                 </table>
                 <span th:replace="::flowCall (flowCall=${flowABCCall_token_relay})"></span>
-                <span th:replace="::sessionState"></span>
             </div>
         </div>
         <!-- Flow ABC (Token Exchange) -->
@@ -167,7 +167,6 @@
                     </tbody>
                 </table>
                 <span th:replace="::flowCall (flowCall=${flowABCCall_token_exchange})"></span>
-                <span th:replace="::sessionState"></span>
             </div>
         </div>
         <!-- Flow ABC (Client Credentials) -->
@@ -201,7 +200,6 @@
                     </tbody>
                 </table>
                 <span th:replace="::flowCall (flowCall=${flowABCCall_client_credentials})"></span>
-                <span th:replace="::sessionState"></span>
             </div>
         </div>
         <!-- Flow Call -->
@@ -253,54 +251,6 @@
             </tr>
             </tbody>
         </table>
-        <!-- Session State -->
-        <div th:fragment="sessionState" class="panel panel-default panel-success">
-            <div class="panel-heading">
-                <h3 class="panel-title">UI-App Session State <small>(<span th:text="${#session.id}"></span>)</small></h3>
-            </div>
-            <div class="panel-body">
-                <div style="float:left">
-                    <span th:replace="::idTokenClaims"></span>
-                </div>
-                <div style="float:right">
-                    <span th:replace="::clientRegistrations"></span>
-                </div>
-            </div>
-        </div>
-        <!-- ID Token Claims -->
-        <div th:fragment="idTokenClaims">
-            <h4>ID Token Claims</h4>
-            <ul class="list-group">
-                <li class="list-group-item" th:each="claim : ${idTokenClaims}">
-                    <strong th:text="${claim.key}">key</strong>: <span th:text="${claim.value}">value</span>
-                </li>
-            </ul>
-        </div>
-        <!-- Client Registrations -->
-        <div th:fragment="clientRegistrations">
-            <h4>Client Registrations</h4>
-            <table class="table table-bordered">
-                <thead>
-                <tr class="row">
-                    <th>Client Id</th>
-                    <th>Authorization Grant</th>
-                    <th>Authorized</th>
-                    <th>Scopes</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="row" th:each="authorizedClientRegistration : ${authorizedClientRegistrations}">
-                    <td th:text="${authorizedClientRegistration.clientId}">clientId</td>
-                    <td th:text="${authorizedClientRegistration.authorizationGrantType}">authorizationGrantType</td>
-                    <td th:text="${authorizedClientRegistration.authorized}">authorized</td>
-                    <td th:text="${#strings.setJoin(authorizedClientRegistration.authorizedScopes,', ')}">authorizedScopes</td>
-                </tr>
-                </tbody>
-            </table>
-            <div align="center">
-                <h5><a href="#" th:href="@{/authorized-clients}">View Authorized Clients</a></h5>
-            </div>
-        </div>
         <!-- Footer -->
         <div th:fragment="footer">
             <footer>

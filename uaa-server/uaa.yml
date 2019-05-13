@@ -61,6 +61,7 @@ scim:
     authority-c: Allow access with 'authority-c'
   users:
     - user1|password|user1@oauth2-flows.io|first1|last1|uaa.user,profile,email,authority-a,authority-b,authority-c
+    - joe|password|joeg@oauth2-flows.io|Joe|G|uaa.user,profile,email,authority-a,authority-b,authority-c
 
 jwt:
   token:

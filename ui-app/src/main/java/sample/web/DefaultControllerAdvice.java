@@ -17,7 +17,6 @@ package sample.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -45,17 +44,24 @@ import java.util.stream.StreamSupport;
  */
 @ControllerAdvice
 public class DefaultControllerAdvice {
-
-	@Autowired
 	private ClientRegistrationRepository clientRegistrationRepository;
-
-	@Autowired
 	private OAuth2AuthorizedClientService authorizedClientService;
 
+	@Autowired(required = false)
+	void setClientRegistrationRepository(ClientRegistrationRepository clientRegistrationRepository) {
+		this.clientRegistrationRepository = clientRegistrationRepository;
+	}
+
+	@Autowired(required = false)
+	void setAuthorizedClientService(OAuth2AuthorizedClientService authorizedClientService) {
+		this.authorizedClientService = authorizedClientService;
+	}
+
 	@ModelAttribute("currentUser")
-	UserModel currentUser(@AuthenticationPrincipal OidcUser oidcUser) {
+	UserModel currentUser(OAuth2AuthenticationToken oauth2Authentication) {
 		UserModel currentUser = new UserModel();
-		if (oidcUser != null) {
+		if (oauth2Authentication != null) {
+			OidcUser oidcUser = (OidcUser) oauth2Authentication.getPrincipal();
 			currentUser.setUserId(oidcUser.getSubject());
 			currentUser.setFirstName(oidcUser.getGivenName());
 			currentUser.setLastName(oidcUser.getFamilyName());
@@ -65,10 +71,11 @@ public class DefaultControllerAdvice {
 	}
 
 	@ModelAttribute("idTokenClaims")
-	Map<String, Object> idTokenClaims(@AuthenticationPrincipal OidcUser oidcUser) {
-		if (oidcUser == null) {
+	Map<String, Object> idTokenClaims(OAuth2AuthenticationToken oauth2Authentication) {
+		if (oauth2Authentication == null) {
 			return Collections.emptyMap();
 		}
+		OidcUser oidcUser = (OidcUser) oauth2Authentication.getPrincipal();
 		final List<String> claimNames = Arrays.asList("iss", "sub", "aud", "azp", "given_name", "family_name", "email");
 		return oidcUser.getClaims().entrySet().stream()
 				.filter(e -> claimNames.contains(e.getKey()))
@@ -77,10 +84,16 @@ public class DefaultControllerAdvice {
 
 	@ModelAttribute("authorizedClientRegistrations")
 	List<AuthorizedClientRegistrationModel> authorizedClientRegistrations(OAuth2AuthenticationToken oauth2Authentication) {
+		if (this.clientRegistrationRepository == null) {
+			return Collections.emptyList();
+		}
 		List<AuthorizedClientRegistrationModel> authorizedClientRegistrations = new ArrayList<>();
 		getClientRegistrations().forEach(registration -> {
-			OAuth2AuthorizedClient authorizedClient = this.authorizedClientService.loadAuthorizedClient(
-					registration.getRegistrationId(), oauth2Authentication.getName());
+			OAuth2AuthorizedClient authorizedClient = null;
+			if (this.authorizedClientService != null) {
+				authorizedClient = this.authorizedClientService.loadAuthorizedClient(
+						registration.getRegistrationId(), oauth2Authentication.getName());
+			}
 			authorizedClientRegistrations.add(
 					new AuthorizedClientRegistrationModel(registration, authorizedClient));
 

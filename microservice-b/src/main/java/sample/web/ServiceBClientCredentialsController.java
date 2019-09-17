@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package sample.web;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -39,7 +38,7 @@ public class ServiceBClientCredentialsController extends AbstractFlowController 
 	}
 
 	@GetMapping
-	public ServiceCallResponse serviceB_ClientCredentials(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication,
+	public ServiceCallResponse serviceB_ClientCredentials(JwtAuthenticationToken jwtAuthentication,
 															@RegisteredOAuth2AuthorizedClient("client-c") OAuth2AuthorizedClient clientC,
 															HttpServletRequest request) {
 

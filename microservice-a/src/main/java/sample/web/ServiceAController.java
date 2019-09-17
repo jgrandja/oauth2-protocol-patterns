@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package sample.web;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +33,7 @@ public class ServiceAController {
 	private static final String SERVICE_A = "service-a";
 
 	@GetMapping
-	public ServiceCallResponse serviceA(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication,
+	public ServiceCallResponse serviceA(JwtAuthenticationToken jwtAuthentication,
 										HttpServletRequest request) {
 		ServiceCallResponse serviceCallResponse = new ServiceCallResponse();
 		serviceCallResponse.setServiceName(SERVICE_A);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package sample.web;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +41,7 @@ public class ServiceBTokenExchangeController extends AbstractFlowController {
 	}
 
 	@GetMapping
-	public ServiceCallResponse serviceB_TokenExchange(@AuthenticationPrincipal JwtAuthenticationToken jwtAuthentication,
+	public ServiceCallResponse serviceB_TokenExchange(JwtAuthenticationToken jwtAuthentication,
 														HttpServletRequest request) {
 
 		Jwt exchangedJwt = this.tokenExchanger.exchange(jwtAuthentication.getToken(), CLIENT_C_EXCHANGE);

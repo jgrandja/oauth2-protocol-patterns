@@ -40,17 +40,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.authorizeRequests()
-				.anyRequest().authenticated()
-				.and()
-			.oauth2Login()
-				.loginPage("/oauth2/authorization/login-client")
-				.failureUrl("/login?error")
-				.permitAll()
-				.and()
-			.logout()
-				.logoutSuccessUrl("http://localhost:8090/uaa/logout.do?client_id=login-client&redirect=http://localhost:8080")
-				.and()
+			.authorizeRequests(authorizeRequests ->
+				authorizeRequests
+					.anyRequest().authenticated())
+			.oauth2Login(oauth2Login ->
+				oauth2Login
+					.loginPage("/oauth2/authorization/login-client")
+					.failureUrl("/login?error")
+					.permitAll())
+			.logout(logout ->
+				logout
+					.logoutSuccessUrl("http://localhost:8090/uaa/logout.do?client_id=login-client&redirect=http://localhost:8080"))
 			.oauth2Client();
 	}
 	// @formatter:on

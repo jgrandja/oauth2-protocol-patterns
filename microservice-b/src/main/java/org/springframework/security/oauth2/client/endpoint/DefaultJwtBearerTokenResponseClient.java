@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import java.util.Arrays;
 
 /**
  * The default implementation of an {@link OAuth2AccessTokenResponseClient}
- * for the {@link JwtBearerGrantRequest#JWT_BEARER_GRANT_TYPE JWT Bearer} grant.
+ * for the {@link JwtBearerGrantRequest#JWT_BEARER_GRANT_TYPE jwt-bearer} grant.
  * This implementation uses a {@link RestOperations} when requesting
  * an access token credential at the Authorization Server's Token Endpoint.
  *
@@ -47,7 +47,7 @@ import java.util.Arrays;
  * @see OAuth2AccessTokenResponse
  * @see <a target="_blank" href="https://tools.ietf.org/html/rfc7523#section-2.1">Section 2.1 JWTs as Authorization Grants</a>
  */
-public class DefaultJwtBearerTokenResponseClient implements OAuth2AccessTokenResponseClient<JwtBearerGrantRequest> {
+public final class DefaultJwtBearerTokenResponseClient implements OAuth2AccessTokenResponseClient<JwtBearerGrantRequest> {
 	private static final String INVALID_TOKEN_RESPONSE_ERROR_CODE = "invalid_token_response";
 
 	private Converter<JwtBearerGrantRequest, RequestEntity<?>> requestEntityConverter =

@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.clientRegistrationId;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 /**
@@ -62,6 +63,19 @@ abstract class AbstractFlowController {
 				.get()
 				.uri(serviceConfig.getUri())
 				.attributes(oauth2AuthorizedClient(authorizedClient))
+				.retrieve()
+				.bodyToMono(ServiceCallResponse.class)
+				.block();
+	}
+
+	protected ServiceCallResponse callServiceC(String clientRegistrationId) {
+		ServicesConfig.ServiceConfig serviceConfig =
+				this.servicesConfig.getConfig(ServicesConfig.SERVICE_C);
+
+		return this.webClient
+				.get()
+				.uri(serviceConfig.getUri())
+				.attributes(clientRegistrationId(clientRegistrationId))
 				.retrieve()
 				.bodyToMono(ServiceCallResponse.class)
 				.block();

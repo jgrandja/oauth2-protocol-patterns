@@ -21,12 +21,7 @@ spring:
             provider: uaa
             client-id: client-c
             client-secret: secret
-            # NOTE:
-            # The actual grant_type used for client-c is "urn:ietf:params:oauth:grant-type:jwt-bearer".
-            # Temporarily configuring with "client_credentials" in order for the `ClientRegistration` to pass validation,
-            # since the "jwt-bearer" grant_type is currently not supported in `AuthorizationGrantType`.
-            # Used by `DefaultJwtBearerTokenResponseClient`.
-            authorization-grant-type: client_credentials
+            authorization-grant-type: urn:ietf:params:oauth:grant-type:jwt-bearer
             scope: authority-c
           client-c:
             provider: uaa

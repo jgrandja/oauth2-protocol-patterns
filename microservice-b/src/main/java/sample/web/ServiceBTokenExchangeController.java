@@ -15,7 +15,6 @@
  */
 package sample.web;
 
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,20 +31,16 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(path = "/service-b", params = {"flowType=token_exchange"})
 public class ServiceBTokenExchangeController extends AbstractFlowController {
 	private static final String CLIENT_C_EXCHANGE = "client-c-exchange";
-	private JwtBearerTokenExchanger tokenExchanger;
 
-	public ServiceBTokenExchangeController(WebClient webClient, ServicesConfig servicesConfig,
-											JwtBearerTokenExchanger tokenExchanger) {
+	public ServiceBTokenExchangeController(WebClient webClient, ServicesConfig servicesConfig) {
 		super(webClient, servicesConfig);
-		this.tokenExchanger = tokenExchanger;
 	}
 
 	@GetMapping
 	public ServiceCallResponse serviceB_TokenExchange(JwtAuthenticationToken jwtAuthentication,
 														HttpServletRequest request) {
 
-		Jwt exchangedJwt = this.tokenExchanger.exchange(jwtAuthentication.getToken(), CLIENT_C_EXCHANGE);
-		ServiceCallResponse serviceCCallResponse = callServiceC(exchangedJwt);
+		ServiceCallResponse serviceCCallResponse = callServiceC(CLIENT_C_EXCHANGE);
 		return fromServiceB(jwtAuthentication, request, serviceCCallResponse);
 	}
 }

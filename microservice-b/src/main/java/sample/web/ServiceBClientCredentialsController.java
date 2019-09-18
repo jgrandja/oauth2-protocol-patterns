@@ -15,8 +15,6 @@
  */
 package sample.web;
 
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,10 +37,9 @@ public class ServiceBClientCredentialsController extends AbstractFlowController 
 
 	@GetMapping
 	public ServiceCallResponse serviceB_ClientCredentials(JwtAuthenticationToken jwtAuthentication,
-															@RegisteredOAuth2AuthorizedClient("client-c") OAuth2AuthorizedClient clientC,
 															HttpServletRequest request) {
 
-		ServiceCallResponse serviceCCallResponse = callServiceC(clientC);
+		ServiceCallResponse serviceCCallResponse = callServiceC("client-c");
 		return fromServiceB(jwtAuthentication, request, serviceCCallResponse);
 	}
 }

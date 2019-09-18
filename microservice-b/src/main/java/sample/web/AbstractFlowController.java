@@ -16,7 +16,6 @@
 package sample.web;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -27,7 +26,6 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.clientRegistrationId;
-import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 /**
  * @author Joe Grandja
@@ -50,19 +48,6 @@ abstract class AbstractFlowController {
 				.get()
 				.uri(serviceConfig.getUri())
 				.headers(headers -> headers.setBearerAuth(jwt.getTokenValue()))
-				.retrieve()
-				.bodyToMono(ServiceCallResponse.class)
-				.block();
-	}
-
-	protected ServiceCallResponse callServiceC(OAuth2AuthorizedClient authorizedClient) {
-		ServicesConfig.ServiceConfig serviceConfig =
-				this.servicesConfig.getConfig(ServicesConfig.SERVICE_C);
-
-		return this.webClient
-				.get()
-				.uri(serviceConfig.getUri())
-				.attributes(oauth2AuthorizedClient(authorizedClient))
 				.retrieve()
 				.bodyToMono(ServiceCallResponse.class)
 				.block();

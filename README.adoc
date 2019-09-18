@@ -18,15 +18,15 @@ Please work with your information security team to determine the suitability of 
 
 === Reference Documentation
 
-* https://docs.spring.io/spring-security/site/docs/5.1.5.RELEASE/reference/htmlsingle/#oauth2client[OAuth 2.0 Client]
-* https://docs.spring.io/spring-security/site/docs/5.1.5.RELEASE/reference/htmlsingle/#oauth2login[OAuth 2.0 Login]
-* https://docs.spring.io/spring-security/site/docs/5.1.5.RELEASE/reference/htmlsingle/#oauth2resourceserver[OAuth 2.0 Resource Server]
+* https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2client[OAuth 2.0 Client]
+* https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2login[OAuth 2.0 Login]
+* https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#oauth2resourceserver[OAuth 2.0 Resource Server]
 
 === Samples
 
-* https://github.com/spring-projects/spring-security/tree/5.1.5.RELEASE/samples/boot/oauth2login[OAuth 2.0 Login]
-* https://github.com/spring-projects/spring-security/tree/5.1.5.RELEASE/samples/boot/oauth2login-webflux[OAuth 2.0 Login (WebFlux)]
-* https://github.com/spring-projects/spring-security/tree/5.1.5.RELEASE/samples/boot/oauth2webclient[OAuth 2.0 WebClient extensions (Servlet)]
-* https://github.com/spring-projects/spring-security/tree/5.1.5.RELEASE/samples/boot/oauth2webclient-webflux[OAuth 2.0 WebClient extensions (WebFlux)]
-* https://github.com/spring-projects/spring-security/tree/5.1.5.RELEASE/samples/boot/oauth2resourceserver[OAuth 2.0 Resource Server]
-* https://github.com/spring-projects/spring-security/tree/5.1.5.RELEASE/samples/boot/oauth2resourceserver-webflux[OAuth 2.0 Resource Server (WebFlux)]
+* https://github.com/spring-projects/spring-security/tree/master/samples/boot/oauth2login[OAuth 2.0 Login]
+* https://github.com/spring-projects/spring-security/tree/master/samples/boot/oauth2login-webflux[OAuth 2.0 Login (WebFlux)]
+* https://github.com/spring-projects/spring-security/tree/master/samples/boot/oauth2webclient[OAuth 2.0 WebClient extensions (Servlet)]
+* https://github.com/spring-projects/spring-security/tree/master/samples/boot/oauth2webclient-webflux[OAuth 2.0 WebClient extensions (WebFlux)]
+* https://github.com/spring-projects/spring-security/tree/master/samples/boot/oauth2resourceserver[OAuth 2.0 Resource Server]
+* https://github.com/spring-projects/spring-security/tree/master/samples/boot/oauth2resourceserver-webflux[OAuth 2.0 Resource Server (WebFlux)]

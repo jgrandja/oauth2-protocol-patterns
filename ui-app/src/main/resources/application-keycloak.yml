@@ -1,0 +1,55 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+#    org.springframework.boot.autoconfigure: DEBUG
+
+spring:
+  thymeleaf:
+    cache: false
+  jackson:
+    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
+  security:
+    oauth2:
+      client:
+        registration:
+          login-client:
+            provider: keycloak
+            client-id: login-client
+            client-secret: 95e1ca79-6280-4080-bfef-6b6fdc21d99e
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid,profile,email
+          client-a:
+            provider: keycloak
+            client-id: client-a
+            client-secret: 72b98c5c-7ad3-477b-9071-a1dd10e71da9
+            redirect-uri: "{baseUrl}/flow-a"
+            scope: authority-a
+          client-ab:
+            provider: keycloak
+            client-id: client-ab
+            client-secret: 3b81916b-84d9-4937-8099-89d7a28e7bca
+            redirect-uri: "{baseUrl}/flow-ab"
+            scope: authority-a,authority-b
+          client-abc:
+            provider: keycloak
+            client-id: client-abc
+            client-secret: 2f86e779-36e0-4b39-9f13-b64681846e3b
+            redirect-uri: "{baseUrl}/flow-abc"
+            scope: authority-a,authority-b,authority-c
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8090/auth/realms/oauth2-demo
+
+oauth2:
+  resource:
+    services:
+      service-a:
+        uri: http://localhost:9000/service-a
+      service-b:
+        uri: http://localhost:9001/service-b

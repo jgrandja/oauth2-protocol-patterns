@@ -14,24 +14,24 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8090/uaa/oauth/token
+          issuer-uri: http://localhost:8090/auth/realms/oauth2-demo
       client:
         registration:
           client-c-exchange:
-            provider: uaa
+            provider: keycloak
             client-id: client-c
-            client-secret: secret
+            client-secret: 3cd3437f-dedc-4826-939b-3579d6585923
             authorization-grant-type: urn:ietf:params:oauth:grant-type:jwt-bearer
             scope: authority-c
           client-c:
-            provider: uaa
+            provider: keycloak
             client-id: client-c
-            client-secret: secret
+            client-secret: 3cd3437f-dedc-4826-939b-3579d6585923
             authorization-grant-type: client_credentials
             scope: authority-c
         provider:
-          uaa:
-            issuer-uri: http://localhost:8090/uaa/oauth/token
+          keycloak:
+            issuer-uri: http://localhost:8090/auth/realms/oauth2-demo
 
 oauth2:
   resource:

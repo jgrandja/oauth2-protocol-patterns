@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,29 @@
  */
 package sample.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import java.net.URI;
 
 /**
  * @author Joe Grandja
  */
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Autowired
+	private ClientRegistrationRepository clientRegistrationRepository;
+
+	@Value("${server.port}")
+	private int serverPort;
 
 	// @formatter:off
 	@Override
@@ -50,9 +63,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					.permitAll())
 			.logout(logout ->
 				logout
-					.logoutSuccessUrl("http://localhost:8090/uaa/logout.do?client_id=login-client&redirect=http://localhost:8080"))
+					.logoutSuccessHandler(oidcLogoutSuccessHandler()))
 			.oauth2Client();
 	}
 	// @formatter:on
 
+	private LogoutSuccessHandler oidcLogoutSuccessHandler() {
+		OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler =
+				new OidcClientInitiatedLogoutSuccessHandler(this.clientRegistrationRepository);
+		oidcLogoutSuccessHandler.setPostLogoutRedirectUri(
+				URI.create("http://localhost:" + this.serverPort));
+		return oidcLogoutSuccessHandler;
+	}
 }

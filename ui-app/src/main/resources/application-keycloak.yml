@@ -33,7 +33,7 @@ spring:
           client-ab:
             provider: keycloak
             client-id: client-ab
-            client-secret: secret
+            client-authentication-method: none
             redirect-uri: "{baseUrl}/flow-ab"
             scope: authority-a,authority-b
           client-abc:

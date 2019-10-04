@@ -36,5 +36,5 @@ dependencies {
             "io.projectreactor.netty:reactor-netty",
             "org.webjars:webjars-locator-core",
             "org.webjars:bootstrap:3.3.7-1",
-            "org.webjars:jquery:3.1.1"
+            "org.webjars:jquery:3.4.1"
 }

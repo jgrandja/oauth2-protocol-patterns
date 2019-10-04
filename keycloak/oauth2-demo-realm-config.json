@@ -161,9 +161,9 @@
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "secret",
       "redirectUris": [
-        "http://localhost:8080/login/oauth2/code/login-client"
+        "http://localhost:8080/login/oauth2/code/login-client",
+        "http://localhost:8080"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -173,7 +173,7 @@
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": false,
-      "publicClient": false,
+      "publicClient": true,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
       "attributes": {
@@ -355,6 +355,7 @@
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
+      "secret": "secret",
       "redirectUris": [
         "http://localhost:8080/flow-ab"
       ],
@@ -366,7 +367,7 @@
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": false,
-      "publicClient": true,
+      "publicClient": false,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
       "attributes": {

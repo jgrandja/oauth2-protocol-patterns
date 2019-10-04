@@ -70,7 +70,7 @@
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "secret",
       "redirectUris": [
         "http://localhost:8080/flow-abc"
       ],
@@ -118,7 +118,7 @@
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "secret",
       "defaultRoles": [
         "view-profile",
         "manage-account"
@@ -161,7 +161,7 @@
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "secret",
       "redirectUris": [
         "http://localhost:8080/login/oauth2/code/login-client"
       ],
@@ -213,7 +213,7 @@
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "secret",
       "redirectUris": [
         "/auth/admin/oauth2-demo/console/*"
       ],
@@ -269,7 +269,7 @@
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "secret",
       "redirectUris": [],
       "webOrigins": [],
       "notBefore": 0,
@@ -355,7 +355,6 @@
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
       "redirectUris": [
         "http://localhost:8080/flow-ab"
       ],
@@ -367,7 +366,7 @@
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": false,
-      "publicClient": false,
+      "publicClient": true,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
       "attributes": {
@@ -400,7 +399,7 @@
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "secret",
       "redirectUris": [
         "http://localhost:8080/flow-a"
       ],
@@ -445,7 +444,7 @@
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "secret",
       "redirectUris": [],
       "webOrigins": [],
       "notBefore": 0,
@@ -483,7 +482,7 @@
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "secret",
       "redirectUris": [],
       "webOrigins": [],
       "notBefore": 0,
@@ -521,7 +520,7 @@
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "secret",
       "redirectUris": [],
       "webOrigins": [],
       "notBefore": 0,
@@ -1001,7 +1000,7 @@
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "false",
-        "display.on.consent.screen": "true",
+        "display.on.consent.screen": "false",
         "consent.screen.text": "${rolesScopeConsentText}"
       },
       "protocolMappers": [
@@ -1713,5 +1712,18 @@
     "offlineSessionMaxLifespanEnabled": "false"
   },
   "keycloakVersion": "7.0.0",
-  "userManagedAccessAllowed": false
+  "userManagedAccessAllowed": false,
+  "users" : [
+      {
+          "username" : "user1",
+          "enabled": true,
+          "email" : "user1@oauth2-flows.io",
+          "firstName": "first1",
+          "lastName": "last1",
+          "credentials" : [
+              { "type" : "password",
+                "value" : "password" }
+          ]
+      }
+  ]
 }

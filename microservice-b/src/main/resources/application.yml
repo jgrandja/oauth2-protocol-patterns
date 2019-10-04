@@ -20,13 +20,13 @@ spring:
           client-c-exchange:
             provider: keycloak
             client-id: client-c
-            client-secret: 3cd3437f-dedc-4826-939b-3579d6585923
+            client-secret: secret
             authorization-grant-type: urn:ietf:params:oauth:grant-type:jwt-bearer
             scope: authority-c
           client-c:
             provider: keycloak
             client-id: client-c
-            client-secret: 3cd3437f-dedc-4826-939b-3579d6585923
+            client-secret: secret
             authorization-grant-type: client_credentials
             scope: authority-c
         provider:

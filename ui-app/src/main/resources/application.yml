@@ -21,25 +21,25 @@ spring:
           login-client:
             provider: keycloak
             client-id: login-client
-            client-secret: 95e1ca79-6280-4080-bfef-6b6fdc21d99e
+            client-secret: secret
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope: openid,profile,email
           client-a:
             provider: keycloak
             client-id: client-a
-            client-secret: 72b98c5c-7ad3-477b-9071-a1dd10e71da9
+            client-secret: secret
             redirect-uri: "{baseUrl}/flow-a"
             scope: authority-a
           client-ab:
             provider: keycloak
             client-id: client-ab
-            client-secret: 3b81916b-84d9-4937-8099-89d7a28e7bca
+            client-authentication-method: none
             redirect-uri: "{baseUrl}/flow-ab"
             scope: authority-a,authority-b
           client-abc:
             provider: keycloak
             client-id: client-abc
-            client-secret: 2f86e779-36e0-4b39-9f13-b64681846e3b
+            client-secret: secret
             redirect-uri: "{baseUrl}/flow-abc"
             scope: authority-a,authority-b,authority-c
         provider:

@@ -21,7 +21,7 @@ spring:
           login-client:
             provider: keycloak
             client-id: login-client
-            client-secret: secret
+            client-authentication-method: none
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope: openid,profile,email
           client-a:
@@ -33,7 +33,7 @@ spring:
           client-ab:
             provider: keycloak
             client-id: client-ab
-            client-authentication-method: none
+            client-secret: secret
             redirect-uri: "{baseUrl}/flow-ab"
             scope: authority-a,authority-b
           client-abc:

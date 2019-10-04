@@ -24,3 +24,5 @@ atlassian-ide-plugin.xml
 .checkstyle
 uaa-server/*.war
 uaa-server/*.log
+keycloak/keycloak-*.zip
+keycloak/keycloak-*/

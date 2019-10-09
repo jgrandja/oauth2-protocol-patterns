@@ -30,7 +30,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web",
             "org.springframework.boot:spring-boot-starter-security",
             "org.springframework.boot:spring-boot-starter-oauth2-resource-server",
-            "org.springframework.security:spring-security-oauth2-client",
+            "org.springframework.boot:spring-boot-starter-oauth2-client",
             "org.springframework:spring-webflux",
             "io.projectreactor.netty:reactor-netty"
 }

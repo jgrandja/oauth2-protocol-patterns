@@ -36,6 +36,7 @@ dependencies {
             "org.springframework.boot:spring-boot-starter-oauth2-client",
             "org.springframework:spring-webflux",
             "io.projectreactor.netty:reactor-netty",
+            "org.apache.httpcomponents:httpclient",
             "org.webjars:webjars-locator-core",
             "org.webjars:bootstrap:3.3.7-1",
             "org.webjars:jquery:3.4.1"

@@ -1,0 +1,50 @@
+== PKI Setup
+
+* Download and start Keycloak
+** Run -> `cd keycloak && ./run.sh`
+
+* Stop Keycloak
+** `Ctrl+C`
+
+* Generate Keystore for Keycloak
+** Run -> `keytool -genkeypair -alias keycloak-server -keyalg RSA -keysize 4096 -keystore keycloak-server.p12 -storepass secret -storetype pkcs12 -validity 365 -dname "CN=keycloak-server, OU=Sample, O=Test, C=CA"`
+
+* Export Keycloak Certificate
+** Run -> `keytool -export -alias keycloak-server -keystore keycloak-server.p12 -storepass secret -file keycloak-server.cer`
+
+* Import (Trust) Client Certificate to Keycloak Keystore
+** Run -> `keytool -import -alias keycloak-server-cert -file keycloak-server.cer -storetype pkcs12 -keystore keycloak-client.p12`
+
+* Display Client Certificate in Keycloak Keystore
+** Run -> `keytool -list -v -alias keycloak-client-cert -keystore keycloak-server.p12 -storepass secret -storetype pkcs12`
+
+
+TODO: https://www.keycloak.org/docs/latest/server_admin/#_x509
+
+* Enable SSL/HTTPS for Keycloak (https://www.keycloak.org/docs/7.0/server_installation/index.html#setting-up-https-ssl)
+** Copy `keycloak-server.p12` to `keycloak/keycloak-7.0.0/standalone/configuration`
+** Locate the element `<security-realm name="ApplicationRealm">` in `keycloak/keycloak-7.0.0/standalone/configuration/standalone.xml` and update the `<server-identities>` element to the following:
+
+```xml
+<server-identities>
+    <ssl>
+        <keystore path="keycloak-server.p12" relative-to="jboss.server.config.dir" keystore-password="secret" alias="keycloak-server" />
+    </ssl>
+</server-identities>
+```
+
+* Start Keycloak
+** Run -> `./run.sh`
+** Test the SSL/HTTPS setup by accessing `https://localhost:8453/auth/`
+
+* Generate Keystore for Client
+** Run -> `keytool -genkeypair -alias keycloak-client -keyalg RSA -keysize 4096 -keystore keycloak-client.p12 -storepass secret -storetype pkcs12 -validity 365 -dname "CN=keycloak-client, OU=Sample, O=Test, C=CA"`
+
+* Export Client Certificate
+** Run -> `keytool -export -alias keycloak-client -keystore keycloak-client.p12 -storepass secret -file keycloak-client.cer`
+
+* Import (Trust) Keycloak Certificate to Client Keystore
+** Run -> `keytool -import -alias keycloak-server-cert -file keycloak-server.cer -storetype pkcs12 -keystore keycloak-client.p12`
+
+* Display Keycloak Certificate in Client Keystore
+** Run -> `keytool -list -v -alias keycloak-server-cert -keystore keycloak-client.p12 -storepass secret -storetype pkcs12`

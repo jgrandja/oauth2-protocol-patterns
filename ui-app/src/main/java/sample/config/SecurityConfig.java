@@ -17,15 +17,33 @@ package sample.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Collections;
+
+import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
 /**
  * @author Joe Grandja
@@ -35,6 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private ClientRegistrationRepository clientRegistrationRepository;
+
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@Value("${server.port}")
 	private int serverPort;
@@ -64,7 +85,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.logout(logout ->
 				logout
 					.logoutSuccessHandler(oidcLogoutSuccessHandler()))
-			.oauth2Client();
+			.oauth2Client()
+				.authorizationCodeGrant()
+					.accessTokenResponseClient(accessTokenResponseClient());
 	}
 	// @formatter:on
 
@@ -74,5 +97,61 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		oidcLogoutSuccessHandler.setPostLogoutRedirectUri(
 				URI.create("http://localhost:" + this.serverPort));
 		return oidcLogoutSuccessHandler;
+	}
+
+	private OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
+		DefaultAuthorizationCodeTokenResponseClient tokenResponseClient = new DefaultAuthorizationCodeTokenResponseClient();
+		tokenResponseClient.setRestOperations(this.restTemplate);
+		tokenResponseClient.setRequestEntityConverter(new OAuth2AuthorizationCodeGrantRequestEntityConverter());
+		return tokenResponseClient;
+	}
+
+	private class OAuth2AuthorizationCodeGrantRequestEntityConverter implements Converter<OAuth2AuthorizationCodeGrantRequest, RequestEntity<?>> {
+
+		@Override
+		public RequestEntity<?> convert(OAuth2AuthorizationCodeGrantRequest authorizationCodeGrantRequest) {
+			ClientRegistration clientRegistration = authorizationCodeGrantRequest.getClientRegistration();
+
+			HttpHeaders headers = getDefaultTokenRequestHeaders();
+			MultiValueMap<String, String> formParameters = this.buildFormParameters(authorizationCodeGrantRequest);
+			URI uri = UriComponentsBuilder.fromUriString(clientRegistration.getProviderDetails().getTokenUri())
+					.build()
+					.toUri();
+
+			return new RequestEntity<>(formParameters, headers, HttpMethod.POST, uri);
+		}
+
+		private MultiValueMap<String, String> buildFormParameters(OAuth2AuthorizationCodeGrantRequest authorizationCodeGrantRequest) {
+			ClientRegistration clientRegistration = authorizationCodeGrantRequest.getClientRegistration();
+			OAuth2AuthorizationExchange authorizationExchange = authorizationCodeGrantRequest.getAuthorizationExchange();
+
+			MultiValueMap<String, String> formParameters = new LinkedMultiValueMap<>();
+			formParameters.add(OAuth2ParameterNames.GRANT_TYPE, authorizationCodeGrantRequest.getGrantType().getValue());
+			formParameters.add(OAuth2ParameterNames.CODE, authorizationExchange.getAuthorizationResponse().getCode());
+			String redirectUri = authorizationExchange.getAuthorizationRequest().getRedirectUri();
+//			String codeVerifier = authorizationExchange.getAuthorizationRequest().getAttribute(PkceParameterNames.CODE_VERIFIER);
+			if (redirectUri != null) {
+				formParameters.add(OAuth2ParameterNames.REDIRECT_URI, redirectUri);
+			}
+//			if (!ClientAuthenticationMethod.BASIC.equals(clientRegistration.getClientAuthenticationMethod())) {
+//				formParameters.add(OAuth2ParameterNames.CLIENT_ID, clientRegistration.getClientId());
+//			}
+//			if (ClientAuthenticationMethod.POST.equals(clientRegistration.getClientAuthenticationMethod())) {
+//				formParameters.add(OAuth2ParameterNames.CLIENT_SECRET, clientRegistration.getClientSecret());
+//			}
+//			if (codeVerifier != null) {
+//				formParameters.add(PkceParameterNames.CODE_VERIFIER, codeVerifier);
+//			}
+
+			return formParameters;
+		}
+
+		private HttpHeaders getDefaultTokenRequestHeaders() {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON_UTF8));
+			final MediaType contentType = MediaType.valueOf(APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
+			headers.setContentType(contentType);
+			return headers;
+		}
 	}
 }

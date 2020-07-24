@@ -25,9 +25,11 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope: openid,profile,email
           client-a:
-            provider: keycloak
+            provider: keycloak-ssl
             client-id: client-a
             client-secret: secret
+#            client-authentication-method: none
+            authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/flow-a"
             scope: authority-a
           client-ab:
@@ -45,6 +47,9 @@ spring:
         provider:
           keycloak:
             issuer-uri: http://localhost:8090/auth/realms/oauth2-demo
+          keycloak-ssl:
+            authorization-uri: https://localhost:8453/auth/realms/oauth2-demo/protocol/openid-connect/auth
+            token-uri: https://localhost:8453/auth/realms/oauth2-demo/protocol/openid-connect/token
 
 oauth2:
   resource:

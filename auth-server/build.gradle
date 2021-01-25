@@ -1,0 +1,36 @@
+buildscript {
+    ext {
+        springBootVersion = '2.4.2'
+    }
+    repositories {
+        mavenCentral()
+        maven { url 'https://repo.spring.io/milestone' }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+
+group = 'org.springframework.security.samples'
+version = '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext['springAuthorizationServerVersion'] = '0.0.3'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+}
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-web",
+            "org.springframework.boot:spring-boot-starter-security",
+            "org.springframework.security.experimental:spring-security-oauth2-authorization-server:${springAuthorizationServerVersion}"
+}

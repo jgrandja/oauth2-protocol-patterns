@@ -22,11 +22,12 @@ apply plugin: 'io.spring.dependency-management'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-ext['springAuthorizationServerVersion'] = '0.0.3'
+ext['springAuthorizationServerVersion'] = '0.1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
+    mavenLocal()
 }
 
 dependencies {

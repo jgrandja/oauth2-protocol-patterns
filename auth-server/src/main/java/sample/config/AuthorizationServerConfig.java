@@ -16,35 +16,32 @@
 package sample.config;
 
 import java.util.UUID;
+import java.util.function.Supplier;
+
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.proc.SecurityContext;
+import sample.jose.Jwks;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerSecurity;
-import org.springframework.security.crypto.keys.KeyManager;
-import org.springframework.security.crypto.keys.StaticKeyGeneratingKeyManager;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 
 /**
  * @author Joe Grandja
  */
 @Configuration(proxyBeanMethods = false)
+@Import(OAuth2AuthorizationServerConfiguration.class)
 public class AuthorizationServerConfig {
-
-    @Bean
-    @Order(Ordered.HIGHEST_PRECEDENCE)
-    SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        OAuth2AuthorizationServerSecurity.applyDefaultConfiguration(http);
-        return http.build();
-    }
 
     // @formatter:off
     @Bean
@@ -63,6 +60,7 @@ public class AuthorizationServerConfig {
                 .clientSecret("secret")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .redirectUri("http://localhost:8080/flow-a")
                 .scope("authority-a")
                 .clientSettings(clientSettings -> clientSettings.requireUserConsent(true))
@@ -73,6 +71,7 @@ public class AuthorizationServerConfig {
                 .clientSecret("secret")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .redirectUri("http://localhost:8080/flow-ab")
                 .scope("authority-a")
                 .scope("authority-b")
@@ -84,6 +83,7 @@ public class AuthorizationServerConfig {
                 .clientSecret("secret")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .redirectUri("http://localhost:8080/flow-abc")
                 .scope("authority-a")
                 .scope("authority-b")
@@ -105,8 +105,20 @@ public class AuthorizationServerConfig {
     // @formatter:on
 
     @Bean
-    KeyManager keyManager() {
-        return new StaticKeyGeneratingKeyManager();
+    Supplier<JWKSet> jwkSetProvider() {
+        RSAKey rsaKey = Jwks.generateRsa();
+        JWKSet jwkSet = new JWKSet(rsaKey);
+        return () -> jwkSet;
+    }
+
+    @Bean
+    JWKSource<SecurityContext> jwkSource(Supplier<JWKSet> jwkSetProvider) {
+        return (jwkSelector, securityContext) -> jwkSelector.select(jwkSetProvider.get());
+    }
+
+    @Bean
+    ProviderSettings providerSettings() {
+        return new ProviderSettings().issuer("http://auth-server:9000");
     }
 
 }

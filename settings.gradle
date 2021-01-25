@@ -1,6 +1,5 @@
 rootProject.name = 'oauth2-protocol-patterns'
 
-include 'uaa-server'
 include 'auth-server'
 include 'ui-app'
 include 'microservice-a'

@@ -7,12 +7,13 @@ Please work with your information security team to determine the suitability of 
 == Run the Sample
 
 * Build the sample -> `./gradlew clean build`
-* Run UAA Server -> `./gradlew -b uaa-server/build.gradle uaa`
+* Run Spring Authorization Server -> `./gradlew -b auth-server/build.gradle bootRun`
+** *IMPORTANT:* Make sure to modify your `/etc/hosts` file to avoid problems with session cookie overwrites between `ui-app` and `auth-server`. Simply add the entry `127.0.0.1	auth-server`
 * Run UI App -> `./gradlew -b ui-app/build.gradle bootRun`
 * Run Microservice A -> `./gradlew -b microservice-a/build.gradle bootRun`
 * Run Microservice B -> `./gradlew -b microservice-b/build.gradle bootRun`
 * Run Microservice C -> `./gradlew -b microservice-c/build.gradle bootRun`
-* Go to `http://localhost:8080` and login to UAA using *user1/password*
+* Go to `http://localhost:8080` and login to Spring Authorization Server using *user1/password*
 
 == Resources
 

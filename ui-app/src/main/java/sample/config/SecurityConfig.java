@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,43 +15,40 @@
  */
 package sample.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.web.SecurityFilterChain;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
  * @author Joe Grandja
  */
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-	// @formatter:off
-	@Override
-	public void configure(WebSecurity web) {
-		web
-			.ignoring()
-				.antMatchers("/assets/**", "/webjars/**");
-
+	@Bean
+	WebSecurityCustomizer webSecurityCustomizer() {
+		return (web) -> web.ignoring().antMatchers("/assets/**", "/webjars/**");
 	}
-	// @formatter:on
 
 	// @formatter:off
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests(authorizeRequests ->
 				authorizeRequests
-					.anyRequest().authenticated())
+					.anyRequest().authenticated()
+			)
 			.oauth2Login(oauth2Login ->
 				oauth2Login
 					.loginPage("/oauth2/authorization/login-client")
 					.failureUrl("/login?error")
 					.permitAll())
-			.logout(logout ->
-				logout
-					.logoutSuccessUrl("http://localhost:8090/uaa/logout.do?client_id=login-client&redirect=http://localhost:8080"))
-			.oauth2Client();
+			.oauth2Client(withDefaults());
+		return http.build();
 	}
 	// @formatter:on
 

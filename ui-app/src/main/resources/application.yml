@@ -19,37 +19,37 @@ spring:
       client:
         registration:
           login-client:
-            provider: uaa
+            provider: spring
             client-id: login-client
             client-secret: secret
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-            scope: openid,profile,email
+            scope: openid
           client-a:
-            provider: uaa
+            provider: spring
             client-id: client-a
             client-secret: secret
             redirect-uri: "{baseUrl}/flow-a"
             scope: authority-a
           client-ab:
-            provider: uaa
+            provider: spring
             client-id: client-ab
             client-secret: secret
             redirect-uri: "{baseUrl}/flow-ab"
             scope: authority-a,authority-b
           client-abc:
-            provider: uaa
+            provider: spring
             client-id: client-abc
             client-secret: secret
             redirect-uri: "{baseUrl}/flow-abc"
             scope: authority-a,authority-b,authority-c
         provider:
-          uaa:
-            issuer-uri: http://localhost:8090/uaa/oauth/token
+          spring:
+            issuer-uri: http://auth-server:9000
 
 oauth2:
   resource:
     services:
       service-a:
-        uri: http://localhost:9000/service-a
+        uri: http://localhost:8090/service-a
       service-b:
-        uri: http://localhost:9001/service-b
+        uri: http://localhost:8091/service-b

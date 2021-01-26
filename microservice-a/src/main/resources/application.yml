@@ -1,5 +1,5 @@
 server:
-  port: 9000
+  port: 8090
 
 logging:
   level:
@@ -14,4 +14,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8090/uaa/oauth/token
+          issuer-uri: http://auth-server:9000

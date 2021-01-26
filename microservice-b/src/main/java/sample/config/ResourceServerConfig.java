@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2019 the original author or authors.
+ * Copyright 2002-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,23 @@
  */
 package sample.config;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * @author Joe Grandja
  */
 @EnableWebSecurity
-public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
+public class ResourceServerConfig {
 
 	// @formatter:off
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
+			.mvcMatcher("/service-b/**")
 			.authorizeRequests(authorizeRequests ->
 				authorizeRequests
 					.mvcMatchers("/service-b/**").access("hasAuthority('SCOPE_authority-b')")
@@ -36,7 +39,9 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 			.oauth2ResourceServer(oauth2ResourceServer ->
 				oauth2ResourceServer
 					.jwt())
-			.oauth2Client();
+			.oauth2Client(Customizer.withDefaults());
+		return http.build();
 	}
 	// @formatter:on
+
 }

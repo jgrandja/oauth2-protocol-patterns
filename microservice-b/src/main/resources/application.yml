@@ -1,5 +1,5 @@
 server:
-  port: 9001
+  port: 8091
 
 logging:
   level:
@@ -14,27 +14,27 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8090/uaa/oauth/token
+          issuer-uri: http://auth-server:9000
       client:
         registration:
           client-c-exchange:
-            provider: uaa
+            provider: spring
             client-id: client-c
             client-secret: secret
             authorization-grant-type: urn:ietf:params:oauth:grant-type:jwt-bearer
             scope: authority-c
           client-c:
-            provider: uaa
+            provider: spring
             client-id: client-c
             client-secret: secret
             authorization-grant-type: client_credentials
             scope: authority-c
         provider:
-          uaa:
-            issuer-uri: http://localhost:8090/uaa/oauth/token
+          spring:
+            issuer-uri: http://auth-server:9000
 
 oauth2:
   resource:
     services:
       service-c:
-        uri: http://localhost:9002/service-c
+        uri: http://localhost:8092/service-c

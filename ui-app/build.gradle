@@ -28,7 +28,8 @@ repositories {
 }
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-starter-web",
+    implementation(
+            "org.springframework.boot:spring-boot-starter-web",
             "org.springframework.boot:spring-boot-starter-thymeleaf",
             "org.springframework.boot:spring-boot-starter-security",
             "org.springframework.boot:spring-boot-starter-oauth2-client",
@@ -37,4 +38,5 @@ dependencies {
             "org.webjars:webjars-locator-core",
             "org.webjars:bootstrap:3.3.7-1",
             "org.webjars:jquery:3.4.1"
+    )
 }

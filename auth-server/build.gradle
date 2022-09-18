@@ -31,7 +31,9 @@ repositories {
 }
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-starter-web",
-            "org.springframework.boot:spring-boot-starter-security",
-            "org.springframework.security.experimental:spring-security-oauth2-authorization-server:${springAuthorizationServerVersion}"
+    implementation(
+        "org.springframework.boot:spring-boot-starter-web",
+        "org.springframework.boot:spring-boot-starter-security",
+        "org.springframework.security:spring-security-oauth2-authorization-server:${springAuthorizationServerVersion}"
+    )
 }

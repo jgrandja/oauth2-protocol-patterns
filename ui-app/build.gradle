@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.4.2'
+        springBootVersion = '2.7.4'
     }
     repositories {
         mavenCentral()
@@ -40,3 +40,4 @@ dependencies {
             "org.webjars:jquery:3.4.1"
     )
 }
+

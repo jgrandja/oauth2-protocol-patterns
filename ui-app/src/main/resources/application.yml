@@ -21,25 +21,25 @@ spring:
           login-client:
             provider: spring
             client-id: login-client
-            client-secret: secret
+            client-secret: secret-login-client
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope: openid
           client-a:
             provider: spring
             client-id: client-a
-            client-secret: secret
+            client-secret: secret-a
             redirect-uri: "{baseUrl}/flow-a"
             scope: authority-a
           client-ab:
             provider: spring
             client-id: client-ab
-            client-secret: secret
+            client-secret: secret-ab
             redirect-uri: "{baseUrl}/flow-ab"
             scope: authority-a,authority-b
           client-abc:
             provider: spring
             client-id: client-abc
-            client-secret: secret
+            client-secret: secret-abc
             redirect-uri: "{baseUrl}/flow-abc"
             scope: authority-a,authority-b,authority-c
         provider:
@@ -50,6 +50,6 @@ oauth2:
   resource:
     services:
       service-a:
-        uri: http://localhost:8090/service-a
+        uri: http://127.0.0.1:8090/service-a
       service-b:
-        uri: http://localhost:8091/service-b
+        uri: http://127.0.0.1:8091/service-b

@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.4.2'
+        springBootVersion = '2.7.4'
     }
     repositories {
         mavenCentral()
@@ -36,3 +36,4 @@ dependencies {
             "io.projectreactor.netty:reactor-netty"
     )
 }
+

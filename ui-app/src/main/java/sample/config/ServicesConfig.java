@@ -21,6 +21,7 @@ import java.util.Map;
 
 /**
  * @author Joe Grandja
+ * @author Stefan Ganzer
  */
 @ConfigurationProperties("oauth2.resource")
 public class ServicesConfig {

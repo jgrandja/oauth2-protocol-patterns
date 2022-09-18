@@ -20,13 +20,13 @@ spring:
           client-c-exchange:
             provider: spring
             client-id: client-c
-            client-secret: secret
+            client-secret: secret-c
             authorization-grant-type: urn:ietf:params:oauth:grant-type:jwt-bearer
             scope: authority-c
           client-c:
             provider: spring
             client-id: client-c
-            client-secret: secret
+            client-secret: secret-c
             authorization-grant-type: client_credentials
             scope: authority-c
         provider:
@@ -37,4 +37,4 @@ oauth2:
   resource:
     services:
       service-c:
-        uri: http://localhost:8092/service-c
+        uri: http://127.0.0.1:8092/service-c

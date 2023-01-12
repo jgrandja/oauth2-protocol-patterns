@@ -16,6 +16,7 @@
 package sample.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -26,20 +27,22 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
  * @author Joe Grandja
+ * @author Stefan Ganzer
  */
 @EnableWebSecurity
+@Configuration
 public class SecurityConfig {
 
 	@Bean
 	WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().antMatchers("/assets/**", "/webjars/**");
+		return (web) -> web.ignoring().requestMatchers("/assets/**", "/webjars/**");
 	}
 
 	// @formatter:off
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.authorizeRequests(authorizeRequests ->
+			.authorizeHttpRequests(authorizeRequests ->
 				authorizeRequests
 					.anyRequest().authenticated()
 			)

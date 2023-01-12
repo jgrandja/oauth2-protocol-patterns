@@ -18,6 +18,7 @@ package sample.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.JwtBearerOAuth2AuthorizedClientProvider;
+import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
@@ -36,6 +37,7 @@ import java.util.function.Function;
 
 /**
  * @author Joe Grandja
+ * @author Stefan Ganzer
  */
 @Configuration
 public class WebClientConfig {
@@ -70,10 +72,10 @@ public class WebClientConfig {
 	private Function<OAuth2AuthorizeRequest, Map<String, Object>> contextAttributesMapper() {
 		return authorizeRequest -> {
 			Map<String, Object> contextAttributes = Collections.emptyMap();
-			if (authorizeRequest.getPrincipal() instanceof JwtAuthenticationToken) {
+			if (authorizeRequest.getPrincipal() instanceof JwtAuthenticationToken authenticationToken) {
 				contextAttributes = new HashMap<>();
-				contextAttributes.put(JwtBearerOAuth2AuthorizedClientProvider.JWT_ATTRIBUTE_NAME,
-						((JwtAuthenticationToken) authorizeRequest.getPrincipal()).getToken());
+				contextAttributes.put(OAuth2AuthorizationContext.class.getName().concat(".JWT"),
+						authenticationToken.getToken());
 			}
 			return contextAttributes;
 		};

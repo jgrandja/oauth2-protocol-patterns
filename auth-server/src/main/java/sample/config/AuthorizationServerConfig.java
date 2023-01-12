@@ -22,23 +22,22 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import sample.jose.Jwks;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 
 /**
  * @author Joe Grandja
+ * @author Stefan Ganzer
  */
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfig {
@@ -117,8 +116,8 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    ProviderSettings providerSettings() {
-        return ProviderSettings.builder().issuer("http://auth-server:9000").build();
+    AuthorizationServerSettings authorizationServerSettings() {
+        return AuthorizationServerSettings.builder().issuer("http://auth-server:9000").build();
     }
 
 }

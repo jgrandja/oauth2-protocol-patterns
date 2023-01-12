@@ -16,24 +16,27 @@
 package sample.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * @author Joe Grandja
+ * @author Stefan Ganzer
  */
 @EnableWebSecurity
+@Configuration(proxyBeanMethods = false)
 public class ResourceServerConfig {
 
 	// @formatter:off
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.mvcMatcher("/service-c/**")
-			.authorizeRequests(authorizeRequests ->
+			.securityMatcher("/service-c/**")
+			.authorizeHttpRequests(authorizeRequests ->
 				authorizeRequests
-					.mvcMatchers("/service-c/**").access("hasAuthority('SCOPE_authority-c')")
+					.requestMatchers("/service-c/**").hasAuthority("SCOPE_authority-c")
 					.anyRequest().authenticated())
 			.oauth2ResourceServer()
 				.jwt();

@@ -14,6 +14,8 @@ Please work with your information security team to determine the suitability of 
 * Run Microservice B -> `./gradlew -b microservice-b/build.gradle bootRun`
 * Run Microservice C -> `./gradlew -b microservice-c/build.gradle bootRun`
 * Go to `http://127.0.0.1:8080` and login to Spring Authorization Server using *user1/password*
+[IMPORTANT]
+Make sure to use the IP literal `127.0.0.1` and not `localhost`.
 
 == Resources
 

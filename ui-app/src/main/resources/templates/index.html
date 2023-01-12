@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css" th:href="@{/webjars/bootstrap/css/bootstrap.css}" />
     </head>
     <body>
-        <div th:replace="templates::header"></div>
+        <div th:replace="~{templates::header}"></div>
         <div class="container">
             <div class="page-header">
                 <div style="float:right;">
@@ -20,32 +20,32 @@
                 <h1>OAuth 2.0 Flows <small>with Spring Security 6</small></h1>
             </div>
             <div th:if="${#bools.isFalse(flowActive)}">
-                <span th:replace="templates::flowA"></span>
-                <span th:replace="templates::flowAB"></span>
-                <span th:replace="templates::flowABCTokenRelay"></span>
-                <span th:replace="templates::flowABCTokenExchange"></span>
-                <span th:replace="templates::flowABCClientCredentials"></span>
+                <span th:replace="~{templates::flowA}"></span>
+                <span th:replace="~{templates::flowAB}"></span>
+                <span th:replace="~{templates::flowABCTokenRelay}"></span>
+                <span th:replace="~{templates::flowABCTokenExchange}"></span>
+                <span th:replace="~{templates::flowABCClientCredentials}"></span>
             </div>
             <div th:if="${#bools.isTrue(flowActive)}">
                 <span th:if="${flowACall}">
-                    <span th:replace="templates::flowA"></span>
+                    <span th:replace="~{templates::flowA}"></span>
                 </span>
                 <span th:if="${flowABCall}">
-                    <span th:replace="templates::flowAB"></span>
+                    <span th:replace="~{templates::flowAB}"></span>
                 </span>
                 <span th:if="${flowABCCall_token_relay}">
-                    <span th:replace="templates::flowABCTokenRelay"></span>
+                    <span th:replace="~{templates::flowABCTokenRelay}"></span>
                 </span>
                 <span th:if="${flowABCCall_token_exchange}">
-                    <span th:replace="templates::flowABCTokenExchange"></span>
+                    <span th:replace="~{templates::flowABCTokenExchange}"></span>
                 </span>
                 <span th:if="${flowABCCall_client_credentials}">
-                    <span th:replace="templates::flowABCClientCredentials"></span>
+                    <span th:replace="~{templates::flowABCClientCredentials}"></span>
                 </span>
             </div>
         </div>
         <br />
-        <div th:replace="templates::footer"></div>
+        <div th:replace="~{templates::footer}"></div>
         <script src="/webjars/jquery/jquery.min.js" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script src="/webjars/bootstrap/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     </body>

@@ -72,7 +72,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <span th:replace="::flowCall (flowCall=${flowACall})"></span>
+                <span th:replace="~{::flowCall (flowCall=${flowACall})}"></span>
             </div>
         </div>
         <!-- Flow AB -->
@@ -103,7 +103,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <span th:replace="::flowCall (flowCall=${flowABCall})"></span>
+                <span th:replace="~{::flowCall (flowCall=${flowABCall})}"></span>
             </div>
         </div>
         <!-- Flow ABC (Token Relay) -->
@@ -135,7 +135,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <span th:replace="::flowCall (flowCall=${flowABCCall_token_relay})"></span>
+                <span th:replace="~{::flowCall (flowCall=${flowABCCall_token_relay})}"></span>
             </div>
         </div>
         <!-- Flow ABC (Token Exchange) -->
@@ -168,7 +168,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <span th:replace="::flowCall (flowCall=${flowABCCall_token_exchange})"></span>
+                <span th:replace="~{::flowCall (flowCall=${flowABCCall_token_exchange})}"></span>
             </div>
         </div>
         <!-- Flow ABC (Client Credentials) -->
@@ -201,12 +201,12 @@
                     </tr>
                     </tbody>
                 </table>
-                <span th:replace="::flowCall (flowCall=${flowABCCall_client_credentials})"></span>
+                <span th:replace="~{::flowCall (flowCall=${flowABCCall_client_credentials})}"></span>
             </div>
         </div>
         <!-- Flow Call -->
         <span th:fragment="flowCall (flowCall)" th:each="serviceCall : ${flowCall.serviceCallResponses}">
-            <div th:replace="::serviceCall (serviceCaller=${flowCall},serviceCallee=${serviceCall})"></div>
+            <div th:replace="~{::serviceCall (serviceCaller=${flowCall},serviceCallee=${serviceCall})}"></div>
         </span>
         <!-- Service Call -->
         <table th:fragment="serviceCall (serviceCaller, serviceCallee)" class="table table-striped">
@@ -250,7 +250,7 @@
             </span>
             <tr class="row" th:if="${serviceCallee.serviceCallResponses}">
                 <span th:each="nextServiceCallee : ${serviceCallee.serviceCallResponses}">
-                    <div th:replace="::serviceCall (serviceCaller=${serviceCallee},serviceCallee=${nextServiceCallee})"></div>
+                    <div th:replace="~{::serviceCall (serviceCaller=${serviceCallee},serviceCallee=${nextServiceCallee})}"></div>
                 </span>
             </tr>
             </tbody>

@@ -15,6 +15,9 @@
  */
 package sample.web;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -28,7 +31,6 @@ import sample.config.ServicesConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
@@ -56,7 +58,7 @@ abstract class AbstractFlowController {
 												MultiValueMap<String, String> params) {
 
 		ServicesConfig.ServiceConfig serviceConfig = this.servicesConfig.getConfig(serviceId);
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(serviceConfig.getUri());
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(serviceConfig.uri());
 		if (!params.isEmpty()) {
 			uriBuilder.queryParams(params);
 		}
@@ -77,17 +79,16 @@ abstract class AbstractFlowController {
 
 		OidcUser oidcUser = (OidcUser) oauth2Authentication.getPrincipal();
 
-		ServiceCallResponse serviceCallResponse = new ServiceCallResponse();
-		serviceCallResponse.setServiceName(ServicesConfig.UI_APP);
-		serviceCallResponse.setServiceUri(request.getRequestURL().toString());
-		serviceCallResponse.setJti("(opaque to client)");
-		serviceCallResponse.setSub(oidcUser.getSubject());
-		serviceCallResponse.setAud(oidcUser.getAudience());
-		serviceCallResponse.setAuthorities(oauth2Authentication.getAuthorities().stream()
-				.map(GrantedAuthority::getAuthority).sorted().collect(Collectors.toList()));
-		if (serviceCallResponses != null) {
-			serviceCallResponse.setServiceCallResponses(Arrays.asList(serviceCallResponses));
-		}
+		ServiceCallResponse serviceCallResponse = new ServiceCallResponse(
+        ServicesConfig.UI_APP,
+        request.getRequestURL().toString(),
+        "opaque to client",
+        oidcUser.getSubject(),
+        oidcUser.getAudience(),
+        oauth2Authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).sorted().toList(),
+        Map.of(),
+        Optional.ofNullable(serviceCallResponses).map(Arrays::asList).orElse(List.of())
+    );
 
 		return serviceCallResponse;
 	}

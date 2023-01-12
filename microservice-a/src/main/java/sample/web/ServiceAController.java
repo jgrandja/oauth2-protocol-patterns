@@ -15,6 +15,8 @@
  */
 package sample.web;
 
+import java.util.List;
+import java.util.Map;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.stream.Collectors;
 
 /**
  * @author Joe Grandja
+ * @author Stefan Ganzer
  */
 @RestController
 @RequestMapping("/service-a")
@@ -35,14 +37,16 @@ public class ServiceAController {
 	@GetMapping
 	public ServiceCallResponse serviceA(JwtAuthenticationToken jwtAuthentication,
 										HttpServletRequest request) {
-		ServiceCallResponse serviceCallResponse = new ServiceCallResponse();
-		serviceCallResponse.setServiceName(SERVICE_A);
-		serviceCallResponse.setServiceUri(request.getRequestURL().toString());
-		serviceCallResponse.setJti(jwtAuthentication.getToken().getId());
-		serviceCallResponse.setSub(jwtAuthentication.getToken().getSubject());
-		serviceCallResponse.setAud(jwtAuthentication.getToken().getAudience());
-		serviceCallResponse.setAuthorities(jwtAuthentication.getAuthorities().stream()
-				.map(GrantedAuthority::getAuthority).sorted().collect(Collectors.toList()));
+    ServiceCallResponse serviceCallResponse = new ServiceCallResponse(
+        SERVICE_A,
+        request.getRequestURL().toString(),
+        jwtAuthentication.getToken().getId(),
+        jwtAuthentication.getToken().getSubject(),
+        jwtAuthentication.getToken().getAudience(),
+        jwtAuthentication.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority).sorted().toList(),
+        Map.of(),
+        List.of());
 
 		return serviceCallResponse;
 	}

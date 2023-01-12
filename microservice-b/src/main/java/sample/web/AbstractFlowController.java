@@ -15,6 +15,9 @@
  */
 package sample.web;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -23,12 +26,12 @@ import sample.config.ServicesConfig;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.clientRegistrationId;
 
 /**
  * @author Joe Grandja
+ * @author Stefan Ganzer
  */
 abstract class AbstractFlowController {
 	private static final String SERVICE_B = "service-b";
@@ -46,7 +49,7 @@ abstract class AbstractFlowController {
 
 		return this.webClient
 				.get()
-				.uri(serviceConfig.getUri())
+				.uri(serviceConfig.uri())
 				.headers(headers -> headers.setBearerAuth(jwt.getTokenValue()))
 				.retrieve()
 				.bodyToMono(ServiceCallResponse.class)
@@ -59,7 +62,7 @@ abstract class AbstractFlowController {
 
 		return this.webClient
 				.get()
-				.uri(serviceConfig.getUri())
+				.uri(serviceConfig.uri())
 				.attributes(clientRegistrationId(clientRegistrationId))
 				.retrieve()
 				.bodyToMono(ServiceCallResponse.class)
@@ -70,17 +73,16 @@ abstract class AbstractFlowController {
 												HttpServletRequest request,
 												ServiceCallResponse... serviceCallResponses) {
 
-		ServiceCallResponse serviceCallResponse = new ServiceCallResponse();
-		serviceCallResponse.setServiceName(SERVICE_B);
-		serviceCallResponse.setServiceUri(request.getRequestURL().toString());
-		serviceCallResponse.setJti(jwtAuthentication.getToken().getId());
-		serviceCallResponse.setSub(jwtAuthentication.getToken().getSubject());
-		serviceCallResponse.setAud(jwtAuthentication.getToken().getAudience());
-		serviceCallResponse.setAuthorities(jwtAuthentication.getAuthorities().stream()
-				.map(GrantedAuthority::getAuthority).sorted().collect(Collectors.toList()));
-		if (serviceCallResponses != null) {
-			serviceCallResponse.setServiceCallResponses(Arrays.asList(serviceCallResponses));
-		}
+    ServiceCallResponse serviceCallResponse = new ServiceCallResponse(
+        SERVICE_B,
+        request.getRequestURL().toString(),
+        jwtAuthentication.getToken().getId(),
+        jwtAuthentication.getToken().getSubject(),
+        jwtAuthentication.getToken().getAudience(),
+        jwtAuthentication.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority).sorted().toList(),
+        Map.of(),
+        Optional.ofNullable(serviceCallResponses).map(Arrays::asList).orElse(List.of()));
 
 		return serviceCallResponse;
 	}

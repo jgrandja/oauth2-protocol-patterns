@@ -15,84 +15,19 @@
  */
 package sample.web;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @author Joe Grandja
+ * @author Stefan Ganzer
  */
-public class ServiceCallResponse {
-	private String serviceName;
-	private String serviceUri;
-	private String jti;
-	private String sub;
-	private List<String> aud = Collections.emptyList();
-	private List<String> authorities = Collections.emptyList();
-	private Map<String, Object> additionalInfo = Collections.emptyMap();
-	private List<ServiceCallResponse> serviceCallResponses = Collections.emptyList();
-
-	public String getServiceName() {
-		return this.serviceName;
-	}
-
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
-	}
-
-	public String getServiceUri() {
-		return this.serviceUri;
-	}
-
-	public void setServiceUri(String serviceUri) {
-		this.serviceUri = serviceUri;
-	}
-
-	public String getJti() {
-		return this.jti;
-	}
-
-	public void setJti(String jti) {
-		this.jti = jti;
-	}
-
-	public String getSub() {
-		return this.sub;
-	}
-
-	public void setSub(String sub) {
-		this.sub = sub;
-	}
-
-	public List<String> getAud() {
-		return this.aud;
-	}
-
-	public void setAud(List<String> aud) {
-		this.aud = aud;
-	}
-
-	public List<String> getAuthorities() {
-		return this.authorities;
-	}
-
-	public void setAuthorities(List<String> authorities) {
-		this.authorities = authorities;
-	}
-
-	public Map<String, Object> getAdditionalInfo() {
-		return this.additionalInfo;
-	}
-
-	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
-	}
-
-	public List<ServiceCallResponse> getServiceCallResponses() {
-		return this.serviceCallResponses;
-	}
-
-	public void setServiceCallResponses(List<ServiceCallResponse> serviceCallResponses) {
-		this.serviceCallResponses = serviceCallResponses;
-	}
-}
+public record ServiceCallResponse(
+    String serviceName,
+    String serviceUri,
+    String jti,
+    String sub,
+    List<String> aud,
+    List<String> authorities,
+    Map<String, Object> additionalInfo,
+    List<ServiceCallResponse> serviceCallResponses) {}

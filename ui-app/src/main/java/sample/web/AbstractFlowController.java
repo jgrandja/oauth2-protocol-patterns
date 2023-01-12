@@ -18,12 +18,14 @@ package sample.web;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import sample.config.ServicesConfig;
@@ -69,6 +71,7 @@ abstract class AbstractFlowController {
 				.uri(uri)
 				.attributes(oauth2AuthorizedClient(authorizedClient))
 				.retrieve()
+        .onStatus(HttpStatusCode::is3xxRedirection, ClientResponse::createException)
 				.bodyToMono(ServiceCallResponse.class)
 				.block();
 	}

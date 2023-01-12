@@ -18,9 +18,11 @@ package sample.web;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import sample.config.ServicesConfig;
 
@@ -52,6 +54,7 @@ abstract class AbstractFlowController {
 				.uri(serviceConfig.uri())
 				.headers(headers -> headers.setBearerAuth(jwt.getTokenValue()))
 				.retrieve()
+        .onStatus(HttpStatusCode::is3xxRedirection, ClientResponse::createException)
 				.bodyToMono(ServiceCallResponse.class)
 				.block();
 	}
@@ -65,6 +68,7 @@ abstract class AbstractFlowController {
 				.uri(serviceConfig.uri())
 				.attributes(clientRegistrationId(clientRegistrationId))
 				.retrieve()
+        .onStatus(HttpStatusCode::is3xxRedirection, ClientResponse::createException)
 				.bodyToMono(ServiceCallResponse.class)
 				.block();
 	}

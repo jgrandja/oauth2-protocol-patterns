@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css" th:href="@{/webjars/bootstrap/css/bootstrap.css}" />
     </head>
     <body>
-        <div th:replace="templates::header"></div>
+        <div th:replace="~{templates::header}"></div>
         <div class="container">
             <div class="page-header">
                 <div style="float:right;">
@@ -67,7 +67,7 @@
             </div>
         </div>
         <br />
-        <div th:replace="templates::footer"></div>
+        <div th:replace="~{templates::footer}"></div>
         <script src="/webjars/jquery/jquery.min.js" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script src="/webjars/bootstrap/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     </body>

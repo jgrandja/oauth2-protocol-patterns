@@ -9,13 +9,13 @@
         <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css" th:href="@{/webjars/bootstrap/css/bootstrap.css}" />
     </head>
     <body>
-        <div th:replace="templates::header"></div>
+        <div th:replace="~{templates::header}"></div>
         <div class="container">
             <h1>Error</h1>
             <h4 th:text="${errorMessage}"></h4>
         </div>
         <br />
-        <div th:replace="templates::footer"></div>
+        <div th:replace="~{templates::footer}"></div>
         <script src="/webjars/jquery/jquery.min.js" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script src="/webjars/bootstrap/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     </body>

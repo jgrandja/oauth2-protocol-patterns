@@ -54,7 +54,7 @@ abstract class AbstractFlowController {
 				.uri(serviceConfig.uri())
 				.headers(headers -> headers.setBearerAuth(jwt.getTokenValue()))
 				.retrieve()
-        .onStatus(HttpStatusCode::is3xxRedirection, ClientResponse::createException)
+        		.onStatus(HttpStatusCode::is3xxRedirection, ClientResponse::createException)
 				.bodyToMono(ServiceCallResponse.class)
 				.block();
 	}
@@ -68,7 +68,7 @@ abstract class AbstractFlowController {
 				.uri(serviceConfig.uri())
 				.attributes(clientRegistrationId(clientRegistrationId))
 				.retrieve()
-        .onStatus(HttpStatusCode::is3xxRedirection, ClientResponse::createException)
+        		.onStatus(HttpStatusCode::is3xxRedirection, ClientResponse::createException)
 				.bodyToMono(ServiceCallResponse.class)
 				.block();
 	}

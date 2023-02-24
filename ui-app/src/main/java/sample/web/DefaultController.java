@@ -15,16 +15,17 @@
  */
 package sample.web;
 
+import java.util.Map;
+import java.util.Optional;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import java.util.Optional;
+
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
-
-import java.util.Map;
 
 /**
  * @author Joe Grandja
@@ -47,10 +48,10 @@ public class DefaultController {
 
 	@GetMapping("/session-state")
 	public String sessionState(Map<String, Object> model, HttpServletRequest request) {
-    var sessionId = Optional.ofNullable(request.getSession(false))
-        .map(HttpSession::getId)
-        .orElse("[no session]");
-    model.put("sessionId", sessionId);
+		var sessionId = Optional.ofNullable(request.getSession(false))
+			.map(HttpSession::getId)
+			.orElse("[no session]");
+		model.put("sessionId", sessionId);
 		return "session-state";
 	}
 }

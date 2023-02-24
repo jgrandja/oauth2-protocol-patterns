@@ -71,7 +71,7 @@ abstract class AbstractFlowController {
 				.uri(uri)
 				.attributes(oauth2AuthorizedClient(authorizedClient))
 				.retrieve()
-        .onStatus(HttpStatusCode::is3xxRedirection, ClientResponse::createException)
+        		.onStatus(HttpStatusCode::is3xxRedirection, ClientResponse::createException)
 				.bodyToMono(ServiceCallResponse.class)
 				.block();
 	}

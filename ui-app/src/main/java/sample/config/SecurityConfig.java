@@ -30,7 +30,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
  * @author Stefan Ganzer
  */
 @EnableWebSecurity
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class SecurityConfig {
 
 	@Bean

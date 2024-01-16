@@ -1,42 +1,26 @@
-buildscript {
-    ext {
-        springBootVersion = '3.0.2'
-    }
-    repositories {
-        mavenCentral()
-        maven { url 'https://repo.spring.io/milestone' }
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
+plugins {
+    id "org.springframework.boot" version "3.2.1"
+    id "io.spring.dependency-management" version "1.1.0"
+    id "java"
 }
 
-
 group = 'org.springframework.security.samples'
-version = '1.0-SNAPSHOT'
-
-apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-
-sourceCompatibility = 17
-targetCompatibility = 17
+version = '1.0.0-SNAPSHOT'
+sourceCompatibility = "17"
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/milestone' }
+    maven { url "https://repo.spring.io/milestone" }
 }
 
 dependencies {
-    implementation(
-            "org.springframework.boot:spring-boot-starter-web",
-            "org.springframework.boot:spring-boot-starter-thymeleaf",
-            "org.springframework.boot:spring-boot-starter-security",
-            "org.springframework.boot:spring-boot-starter-oauth2-client",
-            "org.springframework:spring-webflux",
-            "io.projectreactor.netty:reactor-netty",
-            "org.webjars:webjars-locator-core",
-            "org.webjars:bootstrap:3.4.1",
-            "org.webjars:jquery:3.6.3"
-    )
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-client"
+    implementation "org.springframework:spring-webflux"
+    implementation "io.projectreactor.netty:reactor-netty"
+    implementation "org.webjars:webjars-locator-core"
+    implementation "org.webjars:bootstrap:3.4.1"
+    implementation "org.webjars:jquery:3.6.4"
 }
